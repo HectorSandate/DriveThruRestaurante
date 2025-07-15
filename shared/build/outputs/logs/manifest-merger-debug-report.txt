@@ -1,38 +1,38 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:1:1-22:12
-INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:1:1-22:12
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:1:1-22:12
+INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:1:1-22:12
 	package
-		INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml
+		INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:1:11-69
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:1:11-69
 application
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:3:5-20:19
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:3:5-20:19
 	android:appCategory
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:3:18-45
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:3:18-45
 meta-data#com.google.android.gms.car.application
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:5:9-7:59
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:5:9-7:59
 	android:resource
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:7:13-56
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:7:13-56
 	android:name
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:6:13-66
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:6:13-66
 service#com.example.drivethrurestaurante.shared.MyMusicService
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:12:9-18:19
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:12:9-18:19
 	android:exported
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:14:13-36
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:14:13-36
 	android:name
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:13:13-82
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:13:13-82
 intent-filter#action:name:android.media.browse.MediaBrowserService
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:15:13-17:29
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:15:13-17:29
 action#android.media.browse.MediaBrowserService
-ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:16:17-83
+ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:16:17-83
 	android:name
-		ADDED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:16:25-80
+		ADDED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml:16:25-80
 uses-sdk
-INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml
-INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml
+INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml
+INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml
+		INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml
+		INJECTED from /Users/danielorona/StudioProjects/DriveThruRestaurante/shared/src/main/AndroidManifest.xml
