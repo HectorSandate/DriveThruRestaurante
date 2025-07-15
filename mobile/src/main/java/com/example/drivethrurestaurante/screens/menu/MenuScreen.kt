@@ -15,11 +15,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.drivethrurestaurante.ui.navigation.Routes
 import com.example.drivethrurestaurante.data.model.MenuData
 import com.example.drivethrurestaurante.data.model.MenuItem
@@ -61,7 +66,8 @@ fun MenuScreen(navController: NavController) {
                 actions = {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(end = 8.dp)
+                        modifier = Modifier.padding(end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically // Corregido: era Alignment.Vertical
                     ) {
                         TopBarButton(
                             text = "Desayunos",
@@ -230,7 +236,7 @@ fun MenuSection(
         )
 
         // Línea divisoria
-        Divider(
+        HorizontalDivider(
             color = Color.LightGray,
             thickness = 1.dp,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -253,28 +259,10 @@ fun MenuSection(
                 }
             } else {
                 // Lista vertical para comidas generales
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items.chunked(2).forEach { rowItems ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            rowItems.forEach { item ->
-                                MenuItemCard(
-                                    item = item,
-                                    onClick = { onItemClick(item) },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                            // Si solo hay un elemento en la fila, añade un spacer
-                            if (rowItems.size == 1) {
-                                Spacer(modifier = Modifier.weight(1f))
-                            }
-                        }
-                    }
-                }
+                MenuItemsGrid(
+                    items = items,
+                    onItemClick = onItemClick
+                )
             }
         } else {
             // Placeholder para secciones vacías
@@ -289,6 +277,35 @@ fun MenuSection(
                     color = Color.Gray,
                     fontSize = 16.sp
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun MenuItemsGrid(
+    items: List<MenuItem>,
+    onItemClick: (MenuItem) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items.chunked(2).forEach { rowItems ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                rowItems.forEach { item ->
+                    MenuItemCard(
+                        item = item,
+                        onClick = { onItemClick(item) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                // Si solo hay un elemento en la fila, añade un spacer
+                if (rowItems.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }
@@ -319,22 +336,20 @@ fun MenuItemCard(
             modifier = Modifier.padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen circular del producto (placeholder por ahora)
-            Box(
+            // Imagen circular del producto con AsyncImage
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(item.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = item.name,
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFE57373)),
-                contentAlignment = Alignment.Center
-            ) {
-                // Placeholder con texto hasta que agregues las imágenes
-                Text(
-                    text = item.name.take(2).uppercase(),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(android.R.drawable.ic_menu_gallery), // Corregido: función lambda a Painter
+                error = painterResource(android.R.drawable.ic_menu_close_clear_cancel) // Corregido: función lambda a Painter
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
