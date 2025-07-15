@@ -21,28 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.drivethrurestaurante.ui.navigation.Routes
-
-// Data classes para los elementos del menú
-data class MenuItem(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val category: String
-)
+import com.example.drivethrurestaurante.data.model.MenuData
+import com.example.drivethrurestaurante.data.model.MenuItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Menu") }
-
-    // Datos de ejemplo - reemplaza con tus datos reales
-    val menuItems = listOf(
-        MenuItem(1, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks"),
-        MenuItem(2, "Sándwich", "Con huevo, jamón, tocino o queso, en pan de caja", "snacks"),
-        MenuItem(3, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks"),
-        MenuItem(4, "Sándwich", "Con huevo, jamón, tocino o queso, en pan de caja", "snacks"),
-        MenuItem(5, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks")
-    )
+    var selectedCategory by remember { mutableStateOf("DESAYUNOS") }
 
     Scaffold(
         topBar = {
@@ -77,10 +63,26 @@ fun MenuScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
-                        TopBarButton("Desayunos")
-                        TopBarButton("Comidas")
-                        TopBarButton("Bebidas")
-                        TopBarButton("Postres")
+                        TopBarButton(
+                            text = "Desayunos",
+                            isSelected = selectedCategory == "DESAYUNOS",
+                            onClick = { selectedCategory = "DESAYUNOS" }
+                        )
+                        TopBarButton(
+                            text = "Comidas",
+                            isSelected = selectedCategory == "COMIDAS",
+                            onClick = { selectedCategory = "COMIDAS" }
+                        )
+                        TopBarButton(
+                            text = "Bebidas",
+                            isSelected = selectedCategory == "BEBIDAS",
+                            onClick = { selectedCategory = "BEBIDAS" }
+                        )
+                        TopBarButton(
+                            text = "Postres",
+                            isSelected = selectedCategory == "POSTRES",
+                            onClick = { selectedCategory = "POSTRES" }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -96,27 +98,58 @@ fun MenuScreen(navController: NavController) {
                 .background(Color(0xFFF5F5F5)),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // Sección Comidas y Snacks
-            item {
-                MenuSection(
-                    title = "Comidas y Snacks",
-                    items = menuItems,
-                    onItemClick = { item ->
-                        // Navegar a detalles del producto o agregarlo al carrito
-                        navController.navigate(Routes.ORDER)
+            when (selectedTab) {
+                "Menu" -> {
+                    // Sección de Snacks (siempre visible, horizontal)
+                    item {
+                        MenuSection(
+                            title = "Snacks",
+                            items = MenuData.getSnacks(),
+                            isHorizontal = true,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.ORDER)
+                            }
+                        )
                     }
-                )
-            }
 
-            // Sección Ensaladas
-            item {
-                MenuSection(
-                    title = "Ensaladas",
-                    items = emptyList(), // Agrega elementos de ensaladas aquí
-                    onItemClick = { item ->
-                        navController.navigate(Routes.ORDER)
+                    // Sección de Comidas (vertical, cambia según categoría seleccionada)
+                    item {
+                        val comidaItems = when (selectedCategory) {
+                            "DESAYUNOS" -> MenuData.getItemsByCategory("DESAYUNOS")
+                            "COMIDAS" -> MenuData.getItemsByCategory("COMIDAS")
+                            "BEBIDAS" -> MenuData.getItemsByCategory("BEBIDAS")
+                            "POSTRES" -> MenuData.getItemsByCategory("POSTRES")
+                            else -> MenuData.getItemsByCategory("COMIDAS")
+                        }
+
+                        MenuSection(
+                            title = getCategoryDisplayName(selectedCategory),
+                            items = comidaItems,
+                            isHorizontal = false,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.ORDER)
+                            }
+                        )
                     }
-                )
+                }
+
+                "Recomendaciones" -> {
+                    // Aquí puedes agregar la lógica para recomendaciones
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Recomendaciones próximamente...",
+                                fontSize = 18.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -128,6 +161,39 @@ fun TabButton(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextButton(
+            onClick = onClick,
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
+            )
+        ) {
+            Text(
+                text = text,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 16.sp
+            )
+        }
+
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(2.dp)
+                    .background(Color(0xFFE57373))
+            )
+        }
+    }
+}
+
+@Composable
+fun TopBarButton(
+    text: String,
+    isSelected: Boolean = false,
+    onClick: () -> Unit
+) {
     TextButton(
         onClick = onClick,
         colors = ButtonDefaults.textButtonColors(
@@ -136,32 +202,8 @@ fun TabButton(
     ) {
         Text(
             text = text,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-            fontSize = 16.sp
-        )
-    }
-
-    if (isSelected) {
-        Box(
-            modifier = Modifier
-                .width(60.dp)
-                .height(2.dp)
-                .background(Color(0xFFE57373))
-        )
-    }
-}
-
-@Composable
-fun TopBarButton(text: String) {
-    TextButton(
-        onClick = { /* Filtrar por categoría */ },
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = Color.Gray
-        )
-    ) {
-        Text(
-            text = text,
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
         )
     }
 }
@@ -170,6 +212,7 @@ fun TopBarButton(text: String) {
 fun MenuSection(
     title: String,
     items: List<MenuItem>,
+    isHorizontal: Boolean = false,
     onItemClick: (MenuItem) -> Unit
 ) {
     Column(
@@ -193,17 +236,44 @@ fun MenuSection(
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Lista horizontal de elementos
+        // Lista de elementos
         if (items.isNotEmpty()) {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp)
-            ) {
-                items(items) { item ->
-                    MenuItemCard(
-                        item = item,
-                        onClick = { onItemClick(item) }
-                    )
+            if (isHorizontal) {
+                // Lista horizontal para snacks
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp)
+                ) {
+                    items(items) { item ->
+                        MenuItemCard(
+                            item = item,
+                            onClick = { onItemClick(item) }
+                        )
+                    }
+                }
+            } else {
+                // Lista vertical para comidas generales
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items.chunked(2).forEach { rowItems ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            rowItems.forEach { item ->
+                                MenuItemCard(
+                                    item = item,
+                                    onClick = { onItemClick(item) },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            // Si solo hay un elemento en la fila, añade un spacer
+                            if (rowItems.size == 1) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
                 }
             }
         } else {
@@ -215,7 +285,7 @@ fun MenuSection(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Próximamente...",
+                    text = "No hay elementos disponibles",
                     color = Color.Gray,
                     fontSize = 16.sp
                 )
@@ -227,11 +297,14 @@ fun MenuSection(
 @Composable
 fun MenuItemCard(
     item: MenuItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .width(140.dp)
+        modifier = modifier
+            .then(
+                if (modifier == Modifier) Modifier.width(140.dp) else Modifier
+            )
             .wrapContentHeight(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
@@ -284,6 +357,27 @@ fun MenuItemCard(
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Precio del producto
+            Text(
+                text = "$${item.price}",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFE57373)
+            )
         }
+    }
+}
+
+// Función auxiliar para obtener el nombre de display de la categoría
+fun getCategoryDisplayName(category: String): String {
+    return when (category) {
+        "DESAYUNOS" -> "Desayunos"
+        "COMIDAS" -> "Comidas"
+        "BEBIDAS" -> "Bebidas"
+        "POSTRES" -> "Postres"
+        else -> "Comidas"
     }
 }
