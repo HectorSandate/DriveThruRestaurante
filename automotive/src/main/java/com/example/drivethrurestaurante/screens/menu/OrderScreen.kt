@@ -279,23 +279,21 @@ fun OrderScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
-                        onClick = { 
+                        onClick = {
+                            val cartItem = CartItem(
+                                id = item.id,
+                                name = item.name,
+                                price = item.price,
+                                quantity = quantity,
+                                comments = comentarios
+                            )
                             if (existingCartItem.value != null) {
                                 CartState.updateItemQuantity(item.id, quantity)
                                 CartState.updateItemComments(item.id, comentarios)
-                                showSnackbar = true
                             } else {
-                                CartState.addItem(
-                                    CartItem(
-                                        id = item.id,
-                                        name = item.name,
-                                        price = item.price,
-                                        quantity = quantity,
-                                        comments = comentarios
-                                    )
-                                )
-                                showSnackbar = true
+                                CartState.addItem(cartItem)
                             }
+                            showSnackbar = true
                         },
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color.Black
@@ -309,23 +307,21 @@ fun OrderScreen(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Button(
-                        onClick = { 
+                        onClick = {
+                            val cartItem = CartItem(
+                                id = item.id,
+                                name = item.name,
+                                price = item.price,
+                                quantity = quantity,
+                                comments = comentarios
+                            )
                             if (existingCartItem.value != null) {
                                 CartState.updateItemQuantity(item.id, quantity)
                                 CartState.updateItemComments(item.id, comentarios)
-                                showSnackbar = true
                             } else {
-                                CartState.addItem(
-                                    CartItem(
-                                        id = item.id,
-                                        name = item.name,
-                                        price = item.price,
-                                        quantity = quantity,
-                                        comments = comentarios
-                                    )
-                                )
-                                showSnackbar = true
+                                CartState.addItem(cartItem)
                             }
+                            showSnackbar = true
                             navController.navigate(Routes.createOrderSummaryRoute(item.id))
                         },
                         modifier = Modifier.width(200.dp),

@@ -61,6 +61,7 @@ fun MenuScreen(navController: NavController) {
     // Datos de ejemplo
     val desayunosItems = getAllMenuItems().filter { it.category == "desayunos" }
     val comidasItems = getAllMenuItems().filter { it.category == "comidas" }
+    val platosFuertesItems = getAllMenuItems().filter { it.category == "platos_fuertes" }
 
     Scaffold(
         topBar = {
@@ -176,51 +177,124 @@ fun MenuScreen(navController: NavController) {
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color.White),
-            verticalArrangement = Arrangement.spacedBy(8.dp) // Reduced from 24.dp
-        ) {
-            // Sección Desayunos
-            item {
-                Text(
-                    text = "Menú / Desayunos",
-                    fontSize = 16.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-                )
-            }
-
-            item {
-                MenuSection(
-                    title = "Comidas y Snacks",
-                    items = desayunosItems,
-                    onItemClick = { item ->
-                        navController.navigate(Routes.createOrderRoute(item.id))
+        when (selectedTab) {
+            "Menu" -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Sección Desayunos
+                    item {
+                        Text(
+                            text = "Menú / Desayunos",
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+                        )
                     }
-                )
-            }
 
-            // Sección Comidas
-            item {
-                Text(
-                    text = "Menú / Comidas",
-                    fontSize = 16.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(start = 16.dp, top = 24.dp)
-                )
-            }
-
-            item {
-                MenuSection(
-                    title = "Ensaladas",
-                    items = comidasItems,
-                    onItemClick = { item ->
-                        navController.navigate(Routes.createOrderRoute(item.id))
+                    item {
+                        MenuSection(
+                            title = "Comidas y Snacks",
+                            items = desayunosItems,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.createOrderRoute(item.id))
+                            }
+                        )
                     }
-                )
+
+                    // Sección Comidas
+                    item {
+                        Text(
+                            text = "Menú / Comidas",
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                        )
+                    }
+
+                    item {
+                        MenuSection(
+                            title = "Ensaladas",
+                            items = comidasItems,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.createOrderRoute(item.id))
+                            }
+                        )
+                    }
+
+                    // Sección Platos Fuertes
+                    item {
+                        Text(
+                            text = "Menú / Platos Fuertes",
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                        )
+                    }
+
+                    item {
+                        MenuSection(
+                            title = "Platos Fuertes",
+                            items = platosFuertesItems,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.createOrderRoute(item.id))
+                            }
+                        )
+                    }
+                }
+            }
+            "Recomendaciones" -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        Text(
+                            text = "Promociones Especiales",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+                        )
+                    }
+                    
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            PromocionCard(
+                                imageRes = R.drawable.promocion1,
+                                title = "Combo Familiar",
+                                description = "El que alcanza para todos",
+                                onClick = {
+                                    navController.navigate(Routes.createOrderRoute(10))
+                                }
+                            )
+
+                            Spacer(modifier = Modifier.width(16.dp))
+                            
+                            PromocionCard(
+                                imageRes = R.drawable.promocion2,
+                                title = "La Promo Más Familiar",
+                                description = "Llévate un refresco de 2.5 Lts.",
+                                onClick = {
+                                    navController.navigate(Routes.createOrderRoute(11))
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -239,6 +313,25 @@ fun TopBarButton(text: String) {
             fontSize = 12.sp
         )
     }
+}
+
+@Composable
+fun PromocionCard(
+    imageRes: Int,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Image(
+        painter = painterResource(id = imageRes),
+        contentDescription = title,
+        modifier = modifier
+            .height(450.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .clickable(onClick = onClick),
+        contentScale = ContentScale.Fit
+    )
 }
 
 @Composable

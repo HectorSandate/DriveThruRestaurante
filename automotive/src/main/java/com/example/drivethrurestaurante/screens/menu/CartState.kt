@@ -18,10 +18,13 @@ object CartState {
     fun addItem(item: CartItem) {
         val existingItem = cartItems.find { it.id == item.id }
         if (existingItem != null) {
-            // Si el item ya existe, actualizar la cantidad
-            val updatedItems = cartItems.map { 
+            // Si el item ya existe, actualizar la cantidad y el comentario
+            val updatedItems = cartItems.map {
                 if (it.id == item.id) {
-                    it.copy(quantity = it.quantity + item.quantity)
+                    it.copy(
+                        quantity = it.quantity + item.quantity,
+                        comments = item.comments
+                    )
                 } else {
                     it
                 }
