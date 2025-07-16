@@ -6,14 +6,18 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.drivethrurestaurante.screens.home.HomeScreen
 import com.example.drivethrurestaurante.screens.menu.MenuScreen
 import com.example.drivethrurestaurante.screens.menu.OrderScreen
 import com.example.drivethrurestaurante.screens.menu.OrderSummaryScreen
+import com.example.drivethrurestaurante.screens.confirmation.OrderConfirmationScreen
 
 object Routes {
+    const val HOME = "home"
     const val MENU = "menu"
     const val ORDER = "order/{itemId}"
     const val ORDER_SUMMARY = "order_summary/{itemId}"
+    const val ORDER_CONFIRMATION = "order_confirmation"
 
     fun createOrderRoute(itemId: Int) = "order/$itemId"
     fun createOrderSummaryRoute(itemId: Int) = "order_summary/$itemId"
@@ -23,8 +27,11 @@ object Routes {
 fun Navigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Routes.MENU
+        startDestination = Routes.HOME
     ) {
+        composable(Routes.HOME) {
+            HomeScreen(navController)
+        }
         composable(Routes.MENU) {
             MenuScreen(navController)
         }
@@ -53,8 +60,11 @@ fun Navigation(navController: NavHostController) {
             OrderSummaryScreen(
                 navController = navController,
                 itemId = itemId,
-                itemComments = ""  
+                itemComments = "" // Por ahora sin comentarios para simplificar
             )
+        }
+        composable(Routes.ORDER_CONFIRMATION) {
+            OrderConfirmationScreen(navController = navController)
         }
     }
 }

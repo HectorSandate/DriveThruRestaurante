@@ -160,7 +160,9 @@ fun OrderSummaryScreen(
                         ) {
                             Button(
                                 onClick = { 
+                                    // Limpiar carrito y navegar a confirmación
                                     CartState.clearCart()
+                                    navController.navigate(Routes.ORDER_CONFIRMATION)
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color.Black
