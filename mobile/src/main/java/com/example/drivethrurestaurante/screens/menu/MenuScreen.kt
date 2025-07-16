@@ -478,7 +478,7 @@ fun MenuItemCard(
                 modifier = Modifier
                     .size(100.dp)
                     .background(
-                        Color(0xFFE57373),
+                        Color(0xFFE45656),
                         CircleShape
                     ),
                 contentAlignment = Alignment.Center
