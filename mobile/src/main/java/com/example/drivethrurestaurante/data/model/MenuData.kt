@@ -29,7 +29,7 @@ object MenuData {
             description = "Con mantequilla, miel, frutas o chocolate",
             category = "DESAYUNOS",
             price = 85.0,
-            imageUrl = "https://images.unsplash.com/photo-1528207776546-365bb710ee93?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageUrl = "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1080,h_675/https:/www.yogurtamazonas.com/wp-content/uploads/2025/01/PANCAKES-SIN-FONDO.png"
         ),
         MenuItem(
             id = 2,
@@ -37,7 +37,7 @@ object MenuData {
             description = "Con chispas de chocolate y jarabe de chocolate",
             category = "DESAYUNOS",
             price = 95.0,
-            imageUrl = "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&h=400&fit=crop"
+            imageUrl = "https://static.vecteezy.com/system/resources/previews/057/673/175/non_2x/pancakes-with-chocolate-on-top-free-png.png"
         ),
         MenuItem(
             id = 3,
@@ -45,7 +45,7 @@ object MenuData {
             description = "Con huevo, jamón, tocino o queso, en pan de caja",
             category = "DESAYUNOS",
             price = 75.0,
-            imageUrl = "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=400&fit=crop"
+            imageUrl = "https://lovefoodfeed.com/wp-content/uploads/2021/07/BLT-bacon-lettuce-tomato-sandwich-02wp.webp"
         ),
         MenuItem(
             id = 4,
@@ -53,7 +53,7 @@ object MenuData {
             description = "Huevos estrellados con salsa ranchera y frijoles",
             category = "DESAYUNOS",
             price = 90.0,
-            imageUrl = "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=400&fit=crop"
+            imageUrl = "https://www.santitas.com/sites/santitas.com/files//2022-10/huevos-rancheros-detail.png"
         ),
         MenuItem(
             id = 5,
@@ -61,7 +61,7 @@ object MenuData {
             description = "Avena caliente con frutas frescas y miel",
             category = "DESAYUNOS",
             price = 65.0,
-            imageUrl = "https://images.unsplash.com/photo-1702648982253-8b851013e81f?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageUrl = "https://static.vecteezy.com/system/resources/previews/021/350/872/non_2x/white-bowl-with-oatmeal-and-mix-fruit-isolated-on-a-transparent-background-png.png"
         ),
 
         // COMIDAS
@@ -71,7 +71,7 @@ object MenuData {
             description = "Carne, lechuga, tomate, cebolla y queso",
             category = "COMIDAS",
             price = 120.0,
-            imageUrl = "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=400&fit=crop"
+            imageUrl = "https://www.polloregio.com/wp-content/uploads/2018/05/Updated-Menu-Items-Edited-Burger-Regio-min.png"
         ),
         MenuItem(
             id = 7,
@@ -79,7 +79,7 @@ object MenuData {
             description = "Pechuga de pollo con verduras asadas",
             category = "COMIDAS",
             price = 140.0,
-            imageUrl = "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=400&fit=crop"
+            imageUrl = "https://tofuu.getjusto.com/orioneat-local/resized2/TaDRLYBeSc7Ty8aeW-300-x.webp"
         ),
         MenuItem(
             id = 8,
@@ -87,7 +87,7 @@ object MenuData {
             description = "3 tacos con carne asada, cebolla y cilantro",
             category = "COMIDAS",
             price = 85.0,
-            imageUrl = "https://plus.unsplash.com/premium_photo-1661730314652-911662c0d86e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageUrl = "https://www.polloregio.com/wp-content/uploads/2022/08/2022_Pollo_Regio_August00208-Edit-1-1024x682.png"
         ),
         MenuItem(
             id = 9,
@@ -95,7 +95,7 @@ object MenuData {
             description = "Lechuga, crutones, queso parmesano y aderezo césar",
             category = "COMIDAS",
             price = 95.0,
-            imageUrl = "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=400&fit=crop"
+            imageUrl = "https://tofuu.getjusto.com/orioneat-local/resized2/x439LJPRWKpoZB2k2-2400-x.webp"
         ),
         MenuItem(
             id = 10,
@@ -103,7 +103,7 @@ object MenuData {
             description = "Tortilla con queso y opción de pollo o carne",
             category = "COMIDAS",
             price = 80.0,
-            imageUrl = "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=400&h=400&fit=crop"
+            imageUrl = "https://media.wawa.com/i/wawa/BreakfastQuesadillas_TallHeroBanner_02082023"
         ),
         MenuItem(
             id = 11,
@@ -111,7 +111,7 @@ object MenuData {
             description = "Pasta con salsa alfredo y pollo",
             category = "COMIDAS",
             price = 110.0,
-            imageUrl = "https://images.unsplash.com/photo-1662197480393-2a82030b7b83?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageUrl = "https://aquamarseafood.com/wp-content/uploads/2023/10/Surimi-Alfredo-Aquamar.webp"
         ),
 
         // BEBIDAS
@@ -121,7 +121,7 @@ object MenuData {
             description = "Café negro recién preparado",
             category = "BEBIDAS",
             price = 35.0,
-            imageUrl = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=400&fit=crop"
+            imageUrl = "https://yellowrabbit.mx/cdn/shop/files/pngtree-americano-coffee-beans-transparent-white-background-png-image_9097377_1000x1000.png?v=1693514503"
         ),
         MenuItem(
             id = 13,
@@ -129,7 +129,7 @@ object MenuData {
             description = "Café con leche vaporizada y espuma",
             category = "BEBIDAS",
             price = 45.0,
-            imageUrl = "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=400&fit=crop"
+            imageUrl = "https://discountcoffee.mx/cdn/shop/products/Disenosintitulo-38.png?v=1645556502"
         ),
         MenuItem(
             id = 14,
@@ -137,7 +137,7 @@ object MenuData {
             description = "Jugo natural de naranja recién exprimido",
             category = "BEBIDAS",
             price = 40.0,
-            imageUrl = "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=400&fit=crop"
+            imageUrl = "https://static.vecteezy.com/system/resources/previews/050/591/823/non_2x/fresh-orange-juice-in-a-clear-glass-bottle-with-whole-and-halved-oranges-free-png.png"
         ),
         MenuItem(
             id = 15,
@@ -145,7 +145,7 @@ object MenuData {
             description = "Smoothie con fresas, yogurt y miel",
             category = "BEBIDAS",
             price = 55.0,
-            imageUrl = "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&h=400&fit=crop"
+            imageUrl = "https://static.vecteezy.com/system/resources/previews/065/621/320/non_2x/a-strawberry-smoothie-cup-on-transparent-background-png.png"
         ),
         MenuItem(
             id = 16,
@@ -153,7 +153,7 @@ object MenuData {
             description = "Coca-Cola, Pepsi, Sprite o Fanta",
             category = "BEBIDAS",
             price = 30.0,
-            imageUrl = "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=400&h=400&fit=crop"
+            imageUrl = "https://www.coca-colaentuhogar.com/media/catalog/category/CCETH_CORP_2025_BTNDECATEGORIA_REFRESCOS.png"
         ),
         MenuItem(
             id = 17,
@@ -161,7 +161,7 @@ object MenuData {
             description = "Horchata, jamaica o tamarindo",
             category = "BEBIDAS",
             price = 25.0,
-            imageUrl = "https://plus.unsplash.com/premium_photo-1687354250465-9a0b07b53a2f?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageUrl = "https://pnghq.com/wp-content/uploads/download-hd-vaso-de-agua-fresca-png-download-free-png-images-300x231.png"
         ),
 
         // POSTRES
@@ -171,7 +171,7 @@ object MenuData {
             description = "Helado artesanal con topping a elegir",
             category = "POSTRES",
             price = 50.0,
-            imageUrl = "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&h=400&fit=crop"
+            imageUrl = "https://www.ben-jerrys.es/files/live/sites/systemsite/files/EU%20Specific%20Assets/Flavors/Product%20Assets/Vanilla%20Ice%20Cream/vanilla_rgb_bulk.png"
         ),
         MenuItem(
             id = 19,
@@ -179,7 +179,7 @@ object MenuData {
             description = "Rebanada de pastel de chocolate húmedo",
             category = "POSTRES",
             price = 65.0,
-            imageUrl = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop"
+            imageUrl = "https://morningstarcafe.com.mx/uploads/large/1654541664_pastelchocolate.png"
         ),
         MenuItem(
             id = 20,
@@ -187,7 +187,7 @@ object MenuData {
             description = "Flan tradicional con caramelo",
             category = "POSTRES",
             price = 55.0,
-            imageUrl = "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=400&fit=crop"
+            imageUrl = "https://www.flancasero.com/wp-content/uploads/2019/11/pngocean.com-8.png"
         ),
         MenuItem(
             id = 21,
@@ -195,7 +195,7 @@ object MenuData {
             description = "Gelatina de diferentes sabores",
             category = "POSTRES",
             price = 35.0,
-            imageUrl = "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=400&fit=crop"
+            imageUrl = "https://static.wixstatic.com/media/ee6e5b_66768618c947461faacfe44a4255cb77~mv2.png/v1/fill/w_480,h_480,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ee6e5b_66768618c947461faacfe44a4255cb77~mv2.png"
         ),
         MenuItem(
             id = 22,
@@ -203,7 +203,7 @@ object MenuData {
             description = "Churros con azúcar y canela",
             category = "POSTRES",
             price = 45.0,
-            imageUrl = "https://images.unsplash.com/photo-1549007953-2f2dc0b24019?w=400&h=400&fit=crop"
+            imageUrl = "https://keithsfoods.com.au/wp-content/uploads/2017/12/Spanish-Donuts.png"
         )
     )
 

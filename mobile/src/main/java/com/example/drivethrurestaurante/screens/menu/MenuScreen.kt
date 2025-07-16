@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,71 +38,77 @@ fun MenuScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(24.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TabButton(
-                            text = "Menu",
-                            isSelected = selectedTab == "Menu",
-                            onClick = { selectedTab = "Menu" }
-                        )
-                        TabButton(
-                            text = "Recomendaciones",
-                            isSelected = selectedTab == "Recomendaciones",
-                            onClick = { selectedTab = "Recomendaciones" }
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Volver"
-                        )
-                    }
-                },
-                actions = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(end = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically // Corregido: era Alignment.Vertical
-                    ) {
-                        TopBarButton(
-                            text = "Desayunos",
-                            isSelected = selectedCategory == "DESAYUNOS",
-                            onClick = { selectedCategory = "DESAYUNOS" }
-                        )
-                        TopBarButton(
-                            text = "Comidas",
-                            isSelected = selectedCategory == "COMIDAS",
-                            onClick = { selectedCategory = "COMIDAS" }
-                        )
-                        TopBarButton(
-                            text = "Bebidas",
-                            isSelected = selectedCategory == "BEBIDAS",
-                            onClick = { selectedCategory = "BEBIDAS" }
-                        )
-                        TopBarButton(
-                            text = "Postres",
-                            isSelected = selectedCategory == "POSTRES",
-                            onClick = { selectedCategory = "POSTRES" }
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
+            Column {
+                // Top App Bar con navegación y carrito
+                CenterAlignedTopAppBar(
+                    title = {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(32.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TabButton(
+                                text = "Menu",
+                                isSelected = selectedTab == "Menu",
+                                onClick = { selectedTab = "Menu" }
+                            )
+                            TabButton(
+                                text = "Recomendaciones",
+                                isSelected = selectedTab == "Recomendaciones",
+                                onClick = { selectedTab = "Recomendaciones" }
+                            )
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Volver",
+                                tint = Color(0xFF333333)
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { /* Navegar al carrito */ }) {
+                            Box {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = "Carrito",
+                                    tint = Color(0xFF333333)
+                                )
+                                // Badge opcional para mostrar cantidad de items
+                                Badge(
+                                    modifier = Modifier.align(Alignment.TopEnd),
+                                    containerColor = Color(0xFFE57373)
+                                ) {
+                                    Text(
+                                        text = "3",
+                                        fontSize = 10.sp,
+                                        color = Color.White
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.White
+                    )
                 )
-            )
+
+                // Menú de categorías mejorado (solo visible en la pestaña Menu)
+                if (selectedTab == "Menu") {
+                    CategoryMenuBar(
+                        selectedCategory = selectedCategory,
+                        onCategorySelected = { selectedCategory = it }
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFFF5F5F5)),
+                .background(Color(0xFFF8F8F8)),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             when (selectedTab) {
@@ -140,23 +147,86 @@ fun MenuScreen(navController: NavController) {
                 }
 
                 "Recomendaciones" -> {
-                    // Aquí puedes agregar la lógica para recomendaciones
                     item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "Recomendaciones próximamente...",
-                                fontSize = 18.sp,
-                                color = Color.Gray
-                            )
-                        }
+                        RecommendationsSection()
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun CategoryMenuBar(
+    selectedCategory: String,
+    onCategorySelected: (String) -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color.White,
+        shadowElevation = 2.dp
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            val categories = listOf(
+                "DESAYUNOS" to "Desayunos",
+                "COMIDAS" to "Comidas",
+                "BEBIDAS" to "Bebidas",
+                "POSTRES" to "Postres"
+            )
+
+            items(categories) { (categoryKey, categoryName) ->
+                CategoryTab(
+                    text = categoryName,
+                    isSelected = selectedCategory == categoryKey,
+                    onClick = { onCategorySelected(categoryKey) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryTab(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        TextButton(
+            onClick = onClick,
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = if (isSelected) Color(0xFFE57373) else Color(0xFF666666)
+            ),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = text,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                fontSize = 14.sp
+            )
+        }
+
+        // Indicador de selección
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .width(40.dp)
+                    .height(3.dp)
+                    .background(
+                        Color(0xFFE57373),
+                        RoundedCornerShape(1.5.dp)
+                    )
+            )
+        } else {
+            Spacer(modifier = Modifier.height(3.dp))
         }
     }
 }
@@ -173,12 +243,12 @@ fun TabButton(
         TextButton(
             onClick = onClick,
             colors = ButtonDefaults.textButtonColors(
-                contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
+                contentColor = if (isSelected) Color(0xFFE57373) else Color(0xFF666666)
             )
         ) {
             Text(
                 text = text,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                 fontSize = 16.sp
             )
         }
@@ -187,30 +257,73 @@ fun TabButton(
             Box(
                 modifier = Modifier
                     .width(60.dp)
-                    .height(2.dp)
-                    .background(Color(0xFFE57373))
+                    .height(3.dp)
+                    .background(
+                        Color(0xFFE57373),
+                        RoundedCornerShape(1.5.dp)
+                    )
             )
         }
     }
 }
 
 @Composable
-fun TopBarButton(
-    text: String,
-    isSelected: Boolean = false,
-    onClick: () -> Unit
-) {
-    TextButton(
-        onClick = onClick,
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
-        )
+fun RecommendationsSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = text,
-            fontSize = 12.sp,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+            text = "Recomendaciones Especiales",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF333333),
+            modifier = Modifier.padding(bottom = 16.dp)
         )
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 4.dp
+            )
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(android.R.drawable.btn_star_big_on),
+                        contentDescription = null,
+                        tint = Color(0xFFE57373),
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Text(
+                        text = "Recomendaciones próximamente...",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF666666),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Estamos preparando las mejores sugerencias para ti",
+                        fontSize = 14.sp,
+                        color = Color(0xFF999999),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -226,26 +339,25 @@ fun MenuSection(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
-        // Título de la sección
+        // Título de la sección con mejor estilo
         Text(
             text = title,
-            fontSize = 20.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.padding(bottom = 16.dp)
+            color = Color(0xFF333333),
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Línea divisoria
+        // Línea divisoria más sutil
         HorizontalDivider(
-            color = Color.LightGray,
+            color = Color(0xFFE0E0E0),
             thickness = 1.dp,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 20.dp)
         )
 
         // Lista de elementos
         if (items.isNotEmpty()) {
             if (isHorizontal) {
-                // Lista horizontal para snacks
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(horizontal = 4.dp)
@@ -258,24 +370,50 @@ fun MenuSection(
                     }
                 }
             } else {
-                // Lista vertical para comidas generales
                 MenuItemsGrid(
                     items = items,
                     onItemClick = onItemClick
                 )
             }
         } else {
-            // Placeholder para secciones vacías
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                contentAlignment = Alignment.Center
+            EmptyStateCard()
+        }
+    }
+}
+
+@Composable
+fun EmptyStateCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(120.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        )
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                Icon(
+                    painter = painterResource(android.R.drawable.ic_dialog_info),
+                    contentDescription = null,
+                    tint = Color(0xFFBBBBBB),
+                    modifier = Modifier.size(32.dp)
+                )
                 Text(
                     text = "No hay elementos disponibles",
-                    color = Color.Gray,
-                    fontSize = 16.sp
+                    color = Color(0xFF999999),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
@@ -302,7 +440,6 @@ fun MenuItemsGrid(
                         modifier = Modifier.weight(1f)
                     )
                 }
-                // Si solo hay un elemento en la fila, añade un spacer
                 if (rowItems.size == 1) {
                     Spacer(modifier = Modifier.weight(1f))
                 }
@@ -323,33 +460,43 @@ fun MenuItemCard(
                 if (modifier == Modifier) Modifier.width(140.dp) else Modifier
             )
             .wrapContentHeight(),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 4.dp
         ),
         onClick = onClick
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen circular del producto con AsyncImage
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(item.imageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = item.name,
+            // Imagen circular del producto con fondo rojo
+            Box(
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(android.R.drawable.ic_menu_gallery), // Corregido: función lambda a Painter
-                error = painterResource(android.R.drawable.ic_menu_close_clear_cancel) // Corregido: función lambda a Painter
-            )
+                    .size(100.dp)
+                    .background(
+                        Color(0xFFE57373),
+                        CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(item.imageUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = item.name,
+                    modifier = Modifier
+                        .size(75.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(android.R.drawable.ic_menu_gallery),
+                    error = painterResource(android.R.drawable.ic_menu_close_clear_cancel)
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -358,27 +505,27 @@ fun MenuItemCard(
                 text = item.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black,
+                color = Color(0xFF333333),
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Descripción del producto
             Text(
                 text = item.description,
                 fontSize = 12.sp,
-                color = Color.Gray,
+                color = Color(0xFF666666),
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // Precio del producto
             Text(
                 text = "$${item.price}",
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE57373)
             )
@@ -386,7 +533,6 @@ fun MenuItemCard(
     }
 }
 
-// Función auxiliar para obtener el nombre de display de la categoría
 fun getCategoryDisplayName(category: String): String {
     return when (category) {
         "DESAYUNOS" -> "Desayunos"
