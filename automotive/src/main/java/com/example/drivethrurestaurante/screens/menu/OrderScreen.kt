@@ -32,17 +32,51 @@ fun OrderScreen(
     navController: NavController,
     itemId: Int = 1
 ) {
-    // Buscar si el item ya existe en el carrito
-    val existingCartItem = remember(itemId) {
-        CartState.getItems().find { it.id == itemId }
-    }
-    
-    var comentarios by remember { mutableStateOf(existingCartItem?.comments ?: "") }
-    var quantity by remember { mutableStateOf(existingCartItem?.quantity ?: 1) }
+    var comentarios by remember { mutableStateOf("") }
+    var quantity by remember { mutableStateOf(1) }
+    var showSnackbar by remember { mutableStateOf(false) }
     
     // Encontrar el ítem por ID
     val item = remember(itemId) {
         getAllMenuItems().find { it.id == itemId } ?: getAllMenuItems().first()
+    }
+    
+    val existingCartItem = remember { 
+        mutableStateOf(CartState.getItems().find { it.id == itemId })
+    }
+    
+    LaunchedEffect(CartState.getItems()) {
+        existingCartItem.value = CartState.getItems().find { it.id == itemId }
+        // Si encontramos el item en el carrito, cargar sus valores
+        existingCartItem.value?.let { cartItem ->
+            comentarios = cartItem.comments
+            quantity = cartItem.quantity
+        }
+    }
+    
+    val hasChanges = remember(comentarios, quantity, existingCartItem.value) {
+        existingCartItem.value != null && (
+            comentarios != existingCartItem.value?.comments || 
+            quantity != existingCartItem.value?.quantity
+        )
+    }
+    
+    val buttonText = if (existingCartItem.value != null) {
+        if (hasChanges) "Actualizar orden" else "Añadir a la orden"
+    } else {
+        "Añadir a la orden"
+    }
+    
+    val snackbarHostState = remember { SnackbarHostState() }
+    
+    LaunchedEffect(showSnackbar) {
+        if (showSnackbar) {
+            snackbarHostState.showSnackbar(
+                message = if (existingCartItem.value != null) "Orden actualizada" else "Producto agregado a la orden",
+                duration = SnackbarDuration.Short
+            )
+            showSnackbar = false
+        }
     }
 
     Scaffold(
@@ -77,6 +111,7 @@ fun OrderScreen(
                                     tint = Color.Black
                                 )
                             }
+                            // Badge con contador
                             if (CartState.getTotalItems() > 0) {
                                 Box(
                                     modifier = Modifier
@@ -100,7 +135,8 @@ fun OrderScreen(
                     )
                 )
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Row(
             modifier = Modifier
@@ -244,9 +280,10 @@ fun OrderScreen(
                 ) {
                     OutlinedButton(
                         onClick = { 
-                            if (existingCartItem != null) {
+                            if (existingCartItem.value != null) {
                                 CartState.updateItemQuantity(item.id, quantity)
                                 CartState.updateItemComments(item.id, comentarios)
+                                showSnackbar = true
                             } else {
                                 CartState.addItem(
                                     CartItem(
@@ -257,6 +294,7 @@ fun OrderScreen(
                                         comments = comentarios
                                     )
                                 )
+                                showSnackbar = true
                             }
                         },
                         colors = ButtonDefaults.outlinedButtonColors(
@@ -265,16 +303,17 @@ fun OrderScreen(
                         border = ButtonDefaults.outlinedButtonBorder(enabled = true),
                         modifier = Modifier.width(180.dp)
                     ) {
-                        Text(if (existingCartItem != null) "Actualizar orden" else "Añadir a la orden")
+                        Text(buttonText)
                     }
 
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Button(
                         onClick = { 
-                            if (existingCartItem != null) {
+                            if (existingCartItem.value != null) {
                                 CartState.updateItemQuantity(item.id, quantity)
                                 CartState.updateItemComments(item.id, comentarios)
+                                showSnackbar = true
                             } else {
                                 CartState.addItem(
                                     CartItem(
@@ -285,6 +324,7 @@ fun OrderScreen(
                                         comments = comentarios
                                     )
                                 )
+                                showSnackbar = true
                             }
                             navController.navigate(Routes.createOrderSummaryRoute(item.id))
                         },
