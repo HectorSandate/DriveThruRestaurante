@@ -149,16 +149,6 @@ fun OrderConfirmationScreen(navController: NavController) {
                 .padding(end = 56.dp, bottom = 48.dp)
         )
         // Icono translúcido
-        Icon(
-            imageVector = Icons.Default.Info,
-            contentDescription = "Restaurante",
-            tint = Color.LightGray,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 40.dp, bottom = 16.dp)
-                .size(100.dp)
-                .alpha(0.2f)
-        )
         
         // Botón para continuar (aparece después de 10 segundos)
         if (showButton) {
