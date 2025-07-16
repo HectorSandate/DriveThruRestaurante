@@ -62,6 +62,8 @@ fun MenuScreen(navController: NavController) {
     val desayunosItems = getAllMenuItems().filter { it.category == "desayunos" }
     val comidasItems = getAllMenuItems().filter { it.category == "comidas" }
     val platosFuertesItems = getAllMenuItems().filter { it.category == "platos_fuertes" }
+    val bebidasItems = getAllMenuItems().filter { it.category == "bebidas" }
+    val postresItems = getAllMenuItems().filter { it.category == "postres" }
 
     Scaffold(
         topBar = {
@@ -240,6 +242,46 @@ fun MenuScreen(navController: NavController) {
                         MenuSection(
                             title = "Platos Fuertes",
                             items = platosFuertesItems,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.createOrderRoute(item.id))
+                            }
+                        )
+                    }
+
+                    // Sección Bebidas
+                    item {
+                        Text(
+                            text = "Menú / Bebidas",
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                        )
+                    }
+
+                    item {
+                        MenuSection(
+                            title = "Bebidas Frias",
+                            items = bebidasItems,
+                            onItemClick = { item ->
+                                navController.navigate(Routes.createOrderRoute(item.id))
+                            }
+                        )
+                    }
+
+                    // Sección Postres
+                    item {
+                        Text(
+                            text = "Menú / Postres",
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                        )
+                    }
+
+                    item {
+                        MenuSection(
+                            title = "Postres",
+                            items = postresItems,
                             onItemClick = { item ->
                                 navController.navigate(Routes.createOrderRoute(item.id))
                             }

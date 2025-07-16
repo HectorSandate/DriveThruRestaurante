@@ -35,30 +35,12 @@ fun getAllMenuItems(): List<MenuItem> {
             price = 65.0
         ),
         MenuItem(
-            id = 3,
-            name = "Hot Cakes",
-            description = "Con mantequilla, miel, frutas o chocolate.",
-            detailedDescription = "Hot cakes esponjosos hechos a la plancha, servidos con mantequilla de la casa, miel de maple pura y una selección de frutas frescas de temporada. Opción de agregar chocolate derretido o crema batida.",
-            category = "desayunos",
-            imageRes = R.drawable.pancakes,
-            price = 70.0
-        ),
-        MenuItem(
-            id = 4,
-            name = "Club Sándwich",
-            description = "Con pollo, jamón, tocino, queso y vegetales",
-            detailedDescription = "Club Sándwich de tres pisos con pechuga de pollo a la plancha, jamón de pavo, tocino crujiente, queso cheddar, lechuga fresca, tomate y aguacate. Servido con papas fritas sazonadas y aderezo especial de la casa.",
-            category = "desayunos",
-            imageRes = R.drawable.sandwich,
-            price = 85.0
-        ),
-        MenuItem(
             id = 5,
             name = "Waffles",
             description = "Con mantequilla, miel, frutas o chocolate.",
             detailedDescription = "Waffles belgas hechos al momento con masa artesanal, servidos con mantequilla de la casa, frutas frescas y miel de maple. Perfectamente dorados por fuera y suaves por dentro, con la opción de agregar crema batida o chocolate.",
             category = "desayunos",
-            imageRes = R.drawable.pancakes,
+            imageRes = R.drawable.waffles,
             price = 80.0
         )
     )
@@ -207,5 +189,101 @@ fun getAllMenuItems(): List<MenuItem> {
         )
     )
 
-    return desayunosItems + comidasItems + promocionesItems + platosFuertesItems
+    val bebidasFriasItems = listOf(
+        MenuItem(
+            id = 21,
+            name = "Agua de horchata",
+            description = "Con canela y leche condensada",
+            detailedDescription = "Refrescante agua de horchata casera, preparada con arroz, canela y un toque de leche condensada para endulzar.",
+            category = "bebidas",
+            imageRes = R.drawable.horchata,
+            price = 30.0
+        ),
+        MenuItem(
+            id = 22,
+            name = "Agua de jamaica",
+            description = "Refrescante y natural",
+            detailedDescription = "Agua de jamaica 100% natural, hecha con flor de jamaica y endulzada al gusto. Perfecta para acompañar cualquier platillo.",
+            category = "bebidas",
+            imageRes = R.drawable.jamaica,
+            price = 30.0
+        ),
+        MenuItem(
+            id = 23,
+            name = "Limonada mineral",
+            description = "Con limón fresco y hielo",
+            detailedDescription = "Limonada preparada con agua mineral, jugo de limón recién exprimido y un toque de azúcar. Servida con hielo y rodajas de limón.",
+            category = "bebidas",
+            imageRes = R.drawable.limonada,
+            price = 35.0
+        ),
+        MenuItem(
+            id = 24,
+            name = "Té helado",
+            description = "De durazno, limón o frutos rojos",
+            detailedDescription = "Té helado refrescante, disponible en sabores de durazno, limón o una mezcla de frutos rojos. Endulzado y servido con hielo.",
+            category = "bebidas",
+            imageRes = R.drawable.te,
+            price = 35.0
+        ),
+        MenuItem(
+            id = 25,
+            name = "Smoothie de Fruta",
+            description = "Fresa, mango, plátano o combinados",
+            detailedDescription = "Smoothie de fruta fresca a tu elección. Elige entre fresa, mango, plátano o una combinación de tus favoritos. Hecho con leche y hielo.",
+            category = "bebidas",
+            imageRes = R.drawable.smoothie,
+            price = 45.0
+        ),
+        MenuItem(
+            id = 26,
+            name = "Refrescos",
+            description = "Lata o botella",
+            detailedDescription = "Disfruta de una variedad de refrescos de la familia Coca-Cola. Disponibles en lata o botella.",
+            category = "bebidas",
+            imageRes = R.drawable.coca,
+            price = 25.0
+        ),
+        MenuItem(
+            id = 27,
+            name = "Agua Embotellada",
+            description = "500ml",
+            detailedDescription = "Agua purificada embotellada de 500ml. La opción más saludable para mantenerte hidratado.",
+            category = "bebidas",
+            imageRes = R.drawable.embotellada,
+            price = 20.0
+        )
+    )
+
+    val postresItems = listOf(
+        MenuItem(
+            id = 28,
+            name = "Brownie",
+            description = "Con chocolate derretido y nueces",
+            detailedDescription = "Delicioso brownie casero con chocolate derretido y nueces. Servido caliente con una bola de helado de vainilla opcional.",
+            category = "postres",
+            imageRes = R.drawable.brownie,
+            price = 45.0
+        ),
+        MenuItem(
+            id = 29,
+            name = "Crepa",
+            description = "Con chocolate derretido y frutas",
+            detailedDescription = "Crepa suave y delgada rellena con chocolate derretido y frutas frescas. Espolvoreada con azúcar glass.",
+            category = "postres",
+            imageRes = R.drawable.crepa,
+            price = 50.0
+        ),
+        MenuItem(
+            id = 30,
+            name = "Dona",
+            description = "Glaseada con chocolate",
+            detailedDescription = "Dona fresca y esponjosa glaseada con chocolate derretido. Perfecta para acompañar con café o como postre.",
+            category = "postres",
+            imageRes = R.drawable.dona,
+            price = 35.0
+        )
+    )
+
+    return desayunosItems + comidasItems + promocionesItems + platosFuertesItems + bebidasFriasItems + postresItems
 } 
