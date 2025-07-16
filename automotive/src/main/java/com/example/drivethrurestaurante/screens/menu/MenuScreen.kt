@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,6 +28,7 @@ import com.example.drivethrurestaurante.ui.navigation.Routes
 import androidx.compose.ui.res.painterResource
 import com.example.drivethrurestaurante.R
 import androidx.compose.foundation.clickable
+import kotlinx.coroutines.launch
 
 @Composable
 fun TabButton(
@@ -57,6 +59,8 @@ fun TabButton(
 @Composable
 fun MenuScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Menu") }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     // Datos de ejemplo
     val desayunosItems = getAllMenuItems().filter { it.category == "desayunos" }
@@ -64,6 +68,13 @@ fun MenuScreen(navController: NavController) {
     val platosFuertesItems = getAllMenuItems().filter { it.category == "platos_fuertes" }
     val bebidasItems = getAllMenuItems().filter { it.category == "bebidas" }
     val postresItems = getAllMenuItems().filter { it.category == "postres" }
+
+    // Section anchors for scrolling
+    var desayunosSectionIndex by remember { mutableStateOf(0) }
+    var comidasSectionIndex by remember { mutableStateOf(0) }
+    var platosFuertesSectionIndex by remember { mutableStateOf(0) }
+    var bebidasSectionIndex by remember { mutableStateOf(0) }
+    var postresSectionIndex by remember { mutableStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -80,7 +91,7 @@ fun MenuScreen(navController: NavController) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.logo),
+                                    painter = painterResource(id = R.drawable.logo2),
                                     contentDescription = "Logo",
                                     modifier = Modifier
                                         .size(40.dp)
@@ -136,10 +147,38 @@ fun MenuScreen(navController: NavController) {
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.padding(end = 16.dp)
                                 ) {
-                                    TopBarButton("Desayunos")
-                                    TopBarButton("Comidas")
-                                    TopBarButton("Bebidas")
-                                    TopBarButton("Postres")
+                                    TopBarButton(
+                                        text = "Desayunos",
+                                        onClick = {
+                                            coroutineScope.launch {
+                                                listState.animateScrollToItem(desayunosSectionIndex)
+                                            }
+                                        }
+                                    )
+                                    TopBarButton(
+                                        text = "Comidas",
+                                        onClick = {
+                                            coroutineScope.launch {
+                                                listState.animateScrollToItem(comidasSectionIndex)
+                                            }
+                                        }
+                                    )
+                                    TopBarButton(
+                                        text = "Bebidas",
+                                        onClick = {
+                                            coroutineScope.launch {
+                                                listState.animateScrollToItem(bebidasSectionIndex)
+                                            }
+                                        }
+                                    )
+                                    TopBarButton(
+                                        text = "Postres",
+                                        onClick = {
+                                            coroutineScope.launch {
+                                                listState.animateScrollToItem(postresSectionIndex)
+                                            }
+                                        }
+                                    )
                                     // Icono de bolsa
                                     Box {
                                         IconButton(onClick = { navController.navigate(com.example.drivethrurestaurante.ui.navigation.Routes.createOrderSummaryRoute(1)) }) {
@@ -182,6 +221,7 @@ fun MenuScreen(navController: NavController) {
         when (selectedTab) {
             "Menu" -> {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
@@ -190,6 +230,9 @@ fun MenuScreen(navController: NavController) {
                 ) {
                     // Sección Desayunos
                     item {
+                        LaunchedEffect(Unit) {
+                            desayunosSectionIndex = 0
+                        }
                         Text(
                             text = "Menú / Desayunos",
                             fontSize = 16.sp,
@@ -210,6 +253,9 @@ fun MenuScreen(navController: NavController) {
 
                     // Sección Comidas
                     item {
+                        LaunchedEffect(Unit) {
+                            comidasSectionIndex = 2
+                        }
                         Text(
                             text = "Menú / Comidas",
                             fontSize = 16.sp,
@@ -230,6 +276,9 @@ fun MenuScreen(navController: NavController) {
 
                     // Sección Platos Fuertes
                     item {
+                        LaunchedEffect(Unit) {
+                            platosFuertesSectionIndex = 4
+                        }
                         Text(
                             text = "Menú / Platos Fuertes",
                             fontSize = 16.sp,
@@ -250,6 +299,9 @@ fun MenuScreen(navController: NavController) {
 
                     // Sección Bebidas
                     item {
+                        LaunchedEffect(Unit) {
+                            bebidasSectionIndex = 6
+                        }
                         Text(
                             text = "Menú / Bebidas",
                             fontSize = 16.sp,
@@ -270,6 +322,9 @@ fun MenuScreen(navController: NavController) {
 
                     // Sección Postres
                     item {
+                        LaunchedEffect(Unit) {
+                            postresSectionIndex = 8
+                        }
                         Text(
                             text = "Menú / Postres",
                             fontSize = 16.sp,
@@ -343,9 +398,9 @@ fun MenuScreen(navController: NavController) {
 }
 
 @Composable
-fun TopBarButton(text: String) {
+fun TopBarButton(text: String, onClick: () -> Unit) {
     TextButton(
-        onClick = { /* Filtrar por categoría */ },
+        onClick = onClick,
         colors = ButtonDefaults.textButtonColors(
             contentColor = Color.Gray
         )
