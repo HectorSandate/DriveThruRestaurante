@@ -1,5 +1,6 @@
 package com.example.drivethrurestaurante.screens.menu
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.drivethrurestaurante.ui.navigation.Routes
+import androidx.compose.ui.res.painterResource
+import com.example.drivethrurestaurante.R
 
 // Data classes para los elementos del menú
 data class MenuItem(
@@ -30,12 +33,36 @@ data class MenuItem(
     val category: String
 )
 
+@Composable
+fun TabButton(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextButton(
+            onClick = onClick,
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
+            )
+        ) {
+            Text(
+                text = text,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Menu") }
 
-    // Datos de ejemplo - reemplaza con tus datos reales
+    // Datos de ejemplo 
     val menuItems = listOf(
         MenuItem(1, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks"),
         MenuItem(2, "Sándwich", "Con huevo, jamón, tocino o queso, en pan de caja", "snacks"),
@@ -44,55 +71,67 @@ fun MenuScreen(navController: NavController) {
         MenuItem(5, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks")
     )
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(24.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TabButton(
-                            text = "Menu",
-                            isSelected = selectedTab == "Menu",
-                            onClick = { selectedTab = "Menu" }
-                        )
-                        TabButton(
-                            text = "Recomendaciones",
-                            isSelected = selectedTab == "Recomendaciones",
-                            onClick = { selectedTab = "Recomendaciones" }
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Volver"
-                        )
-                    }
-                },
-                actions = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        TopBarButton("Desayunos")
-                        TopBarButton("Comidas")
-                        TopBarButton("Bebidas")
-                        TopBarButton("Postres")
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
+    Column {
+        CenterAlignedTopAppBar(
+            title = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TabButton(
+                        text = "Menu",
+                        isSelected = selectedTab == "Menu",
+                        onClick = { selectedTab = "Menu" }
+                    )
+                    TabButton(
+                        text = "Recomendaciones",
+                        isSelected = selectedTab == "Recomendaciones",
+                        onClick = { selectedTab = "Recomendaciones" }
+                    )
+                }
+            },
+            navigationIcon = {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .padding(8.dp)
                 )
+            },
+            actions = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    TopBarButton("Desayunos")
+                    TopBarButton("Comidas")
+                    TopBarButton("Bebidas")
+                    TopBarButton("Postres")
+                }
+            },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.White
+            )
+        )
+        
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(2.dp)
+                    .background(Color(0xFFE57373))
+                    .align(if (selectedTab == "Menu") Alignment.CenterStart else Alignment.Center)
             )
         }
-    ) { paddingValues ->
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .background(Color(0xFFF5F5F5)),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -102,7 +141,6 @@ fun MenuScreen(navController: NavController) {
                     title = "Comidas y Snacks",
                     items = menuItems,
                     onItemClick = { item ->
-                        // Navegar a detalles del producto o agregarlo al carrito
                         navController.navigate(Routes.ORDER)
                     }
                 )
@@ -112,42 +150,13 @@ fun MenuScreen(navController: NavController) {
             item {
                 MenuSection(
                     title = "Ensaladas",
-                    items = emptyList(), // Agrega elementos de ensaladas aquí
+                    items = emptyList(), 
                     onItemClick = { item ->
                         navController.navigate(Routes.ORDER)
                     }
                 )
             }
         }
-    }
-}
-
-@Composable
-fun TabButton(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    TextButton(
-        onClick = onClick,
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
-        )
-    ) {
-        Text(
-            text = text,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-            fontSize = 16.sp
-        )
-    }
-
-    if (isSelected) {
-        Box(
-            modifier = Modifier
-                .width(60.dp)
-                .height(2.dp)
-                .background(Color(0xFFE57373))
-        )
     }
 }
 
@@ -177,7 +186,6 @@ fun MenuSection(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
-        // Título de la sección
         Text(
             text = title,
             fontSize = 20.sp,
@@ -186,14 +194,12 @@ fun MenuSection(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Línea divisoria
         Divider(
             color = Color.LightGray,
             thickness = 1.dp,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Lista horizontal de elementos
         if (items.isNotEmpty()) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -207,7 +213,6 @@ fun MenuSection(
                 }
             }
         } else {
-            // Placeholder para secciones vacías
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -246,7 +251,6 @@ fun MenuItemCard(
             modifier = Modifier.padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen circular del producto (placeholder por ahora)
             Box(
                 modifier = Modifier
                     .size(80.dp)

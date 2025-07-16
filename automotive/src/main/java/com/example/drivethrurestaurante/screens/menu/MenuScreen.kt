@@ -1,5 +1,6 @@
 package com.example.drivethrurestaurante.screens.menu
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,118 +10,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.drivethrurestaurante.ui.navigation.Routes
-
-// Data classes para los elementos del menú
-data class MenuItem(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val category: String
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MenuScreen(navController: NavController) {
-    var selectedTab by remember { mutableStateOf("Menu") }
-
-    // Datos de ejemplo - reemplaza con tus datos reales
-    val menuItems = listOf(
-        MenuItem(1, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks"),
-        MenuItem(2, "Sándwich", "Con huevo, jamón, tocino o queso, en pan de caja", "snacks"),
-        MenuItem(3, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks"),
-        MenuItem(4, "Sándwich", "Con huevo, jamón, tocino o queso, en pan de caja", "snacks"),
-        MenuItem(5, "Pancakes", "Con mantequilla, miel, frutas o chocolate.", "snacks")
-    )
-
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(24.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TabButton(
-                            text = "Menu",
-                            isSelected = selectedTab == "Menu",
-                            onClick = { selectedTab = "Menu" }
-                        )
-                        TabButton(
-                            text = "Recomendaciones",
-                            isSelected = selectedTab == "Recomendaciones",
-                            onClick = { selectedTab = "Recomendaciones" }
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Volver"
-                        )
-                    }
-                },
-                actions = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        TopBarButton("Desayunos")
-                        TopBarButton("Comidas")
-                        TopBarButton("Bebidas")
-                        TopBarButton("Postres")
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
-                )
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(Color(0xFFF5F5F5)),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // Sección Comidas y Snacks
-            item {
-                MenuSection(
-                    title = "Comidas y Snacks",
-                    items = menuItems,
-                    onItemClick = { item ->
-                        // Navegar a detalles del producto o agregarlo al carrito
-                        navController.navigate(Routes.ORDER)
-                    }
-                )
-            }
-
-            // Sección Ensaladas
-            item {
-                MenuSection(
-                    title = "Ensaladas",
-                    items = emptyList(), // Agrega elementos de ensaladas aquí
-                    onItemClick = { item ->
-                        navController.navigate(Routes.ORDER)
-                    }
-                )
-            }
-        }
-    }
-}
+import androidx.compose.ui.res.painterResource
+import com.example.drivethrurestaurante.R
+import androidx.compose.foundation.clickable
 
 @Composable
 fun TabButton(
@@ -128,26 +34,195 @@ fun TabButton(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    TextButton(
-        onClick = onClick,
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
-        )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = text,
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-            fontSize = 16.sp
-        )
+        TextButton(
+            onClick = onClick,
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = if (isSelected) Color(0xFFE57373) else Color.Gray
+            ),
+            modifier = Modifier.padding(horizontal = 8.dp)
+        ) {
+            Text(
+                text = text,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 16.sp
+            )
+        }
     }
+}
 
-    if (isSelected) {
-        Box(
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MenuScreen(navController: NavController) {
+    var selectedTab by remember { mutableStateOf("Menu") }
+
+    // Datos de ejemplo
+    val desayunosItems = getAllMenuItems().filter { it.category == "desayunos" }
+    val comidasItems = getAllMenuItems().filter { it.category == "comidas" }
+
+    Scaffold(
+        topBar = {
+            Column {
+                Surface(
+                    shadowElevation = 4.dp,
+                    color = Color.White
+                ) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.logo),
+                                    contentDescription = "Logo",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(start = 16.dp)
+                                )
+                                Row(
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Box(modifier = Modifier.width(IntrinsicSize.Min)) {
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            TabButton(
+                                                text = "Menú",
+                                                isSelected = selectedTab == "Menu",
+                                                onClick = { selectedTab = "Menu" }
+                                            )
+                                            if (selectedTab == "Menu") {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .width(50.dp)
+                                                        .height(2.dp)
+                                                        .background(Color(0xFFE57373))
+                                                )
+                                            }
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Box(modifier = Modifier.width(IntrinsicSize.Min)) {
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            TabButton(
+                                                text = "Recomendaciones",
+                                                isSelected = selectedTab == "Recomendaciones",
+                                                onClick = { selectedTab = "Recomendaciones" }
+                                            )
+                                            if (selectedTab == "Recomendaciones") {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .width(120.dp)
+                                                        .height(2.dp)
+                                                        .background(Color(0xFFE57373))
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                Row(
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(end = 16.dp)
+                                ) {
+                                    TopBarButton("Desayunos")
+                                    TopBarButton("Comidas")
+                                    TopBarButton("Bebidas")
+                                    TopBarButton("Postres")
+                                    // Icono de bolsa
+                                    Box {
+                                        IconButton(onClick = { navController.navigate(com.example.drivethrurestaurante.ui.navigation.Routes.createOrderSummaryRoute(1)) }) {
+                                            Icon(
+                                                imageVector = Icons.Filled.ShoppingCart,
+                                                contentDescription = "Ver pedido",
+                                                tint = Color.Black
+                                            )
+                                        }
+                                        // Badge con contador
+                                        if (CartState.getTotalItems() > 0) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(20.dp)
+                                                    .background(Color.Red, CircleShape)
+                                                    .align(Alignment.TopEnd),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = CartState.getTotalItems().toString(),
+                                                    color = Color.White,
+                                                    fontSize = 9.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    textAlign = TextAlign.Center
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Color.White
+                        )
+                    )
+                }
+            }
+        }
+    ) { paddingValues ->
+        LazyColumn(
             modifier = Modifier
-                .width(60.dp)
-                .height(2.dp)
-                .background(Color(0xFFE57373))
-        )
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(Color.White),
+            verticalArrangement = Arrangement.spacedBy(8.dp) // Reduced from 24.dp
+        ) {
+            // Sección Desayunos
+            item {
+                Text(
+                    text = "Menú / Desayunos",
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+                )
+            }
+
+            item {
+                MenuSection(
+                    title = "Comidas y Snacks",
+                    items = desayunosItems,
+                    onItemClick = { item ->
+                        navController.navigate(Routes.createOrderRoute(item.id))
+                    }
+                )
+            }
+
+            // Sección Comidas
+            item {
+                Text(
+                    text = "Menú / Comidas",
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(start = 16.dp, top = 24.dp)
+                )
+            }
+
+            item {
+                MenuSection(
+                    title = "Ensaladas",
+                    items = comidasItems,
+                    onItemClick = { item ->
+                        navController.navigate(Routes.createOrderRoute(item.id))
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -183,14 +258,14 @@ fun MenuSection(
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 8.dp) // Reduced from 16.dp
         )
 
         // Línea divisoria
-        Divider(
+        HorizontalDivider(
             color = Color.LightGray,
             thickness = 1.dp,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 16.dp) // Reduced from 24.dp
         )
 
         // Lista horizontal de elementos
@@ -229,61 +304,53 @@ fun MenuItemCard(
     item: MenuItem,
     onClick: () -> Unit
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .width(140.dp)
-            .wrapContentHeight(),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        onClick = onClick
+            .wrapContentHeight()
+            .background(Color.White)
+            .clickable { onClick() },
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        // Círculo rojo con imagen
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE57373)),
+            contentAlignment = Alignment.Center
         ) {
-            // Imagen circular del producto (placeholder por ahora)
-            Box(
+            Image(
+                painter = painterResource(id = item.imageRes),
+                contentDescription = item.name,
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFE57373)),
-                contentAlignment = Alignment.Center
-            ) {
-                // Placeholder con texto hasta que agregues las imágenes
-                Text(
-                    text = item.name.take(2).uppercase(),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Nombre del producto
-            Text(
-                text = item.name,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Descripción del producto
-            Text(
-                text = item.description,
-                fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-                lineHeight = 16.sp
+                    .size(60.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
             )
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Nombre del producto
+        Text(
+            text = item.name,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Descripción del producto
+        Text(
+            text = item.description,
+            fontSize = 12.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center,
+            lineHeight = 16.sp,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
     }
 }
