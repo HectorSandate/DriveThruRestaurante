@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -153,9 +154,145 @@ fun ImageCarousel(
     }
 }
 
+@Composable
+fun QRScannerDialog(
+    onDismiss: () -> Unit,
+    onScanSuccess: () -> Unit
+) {
+    var isScanning by remember { mutableStateOf(false) }
+    var scanProgress by remember { mutableStateOf(0f) }
+
+    // Simular el proceso de escaneado
+    LaunchedEffect(isScanning) {
+        if (isScanning) {
+            for (i in 0..100) {
+                scanProgress = i / 100f
+                delay(20)
+            }
+            delay(500)
+            onScanSuccess()
+        }
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Escanear código QR",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Simulación del área de escaneado
+                Box(
+                    modifier = Modifier
+                        .size(200.dp)
+                        .background(
+                            Color.Gray.copy(alpha = 0.1f),
+                            RoundedCornerShape(16.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (!isScanning) {
+                        // Simulación del QR code
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "📱",
+                                fontSize = 48.sp
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Posiciona el código QR\naquí para escanear",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray
+                            )
+                        }
+                    } else {
+                        // Animación de escaneado
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(
+                                progress = scanProgress,
+                                modifier = Modifier.size(60.dp),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Escaneando...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                if (!isScanning) {
+                    // Botón para simular escaneado
+                    Button(
+                        onClick = { isScanning = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(
+                            text = "Simular escaneado",
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    TextButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Cancelar",
+                            color = Color.Gray
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "Procesando código QR...",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
+    var showQRScanner by remember { mutableStateOf(false) }
+    var hasScannedQR by remember { mutableStateOf(false) }
+
     val promotionalImages = listOf(
         "https://img.freepik.com/fotos-premium/hamburguesa-jugosa-carne-res-parrilla-hamburguesa-hamburguesa-cerca-hamburguesa-queso-fritas-bebida-copyspace_1135385-21932.jpg",
         "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/287471278/original/956e5560ffc0dd48c3563975fdec7407a0ed9e8e/do-poster-banner-business-card-flyer-design-with-my-best-effort.jpg",
@@ -190,6 +327,27 @@ fun HomeScreen(navController: NavController) {
                                 fontSize = 20.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                        }
+                    },
+                    actions = {
+                        // Indicador de estado QR
+                        if (hasScannedQR) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                        CircleShape
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "✓",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -260,21 +418,27 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Content section with card and button
+            // Content section with card and buttons
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                // Value proposition card
+                // QR Scanner card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White
+                        containerColor = if (hasScannedQR)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                        else
+                            Color.White
                     ),
                     border = androidx.compose.foundation.BorderStroke(
                         width = 1.dp,
-                        color = Color.Gray.copy(alpha = 0.15f)
+                        color = if (hasScannedQR)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                        else
+                            Color.Gray.copy(alpha = 0.15f)
                     ),
                     shape = RoundedCornerShape(24.dp),
                     elevation = CardDefaults.cardElevation(
@@ -287,7 +451,7 @@ fun HomeScreen(navController: NavController) {
                             .padding(20.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Speed icon
+                        // QR icon
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
@@ -298,7 +462,7 @@ fun HomeScreen(navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "⚡",
+                                text = if (hasScannedQR) "✓" else "📱",
                                 fontSize = 24.sp,
                                 color = MaterialTheme.colorScheme.primary
                             )
@@ -306,65 +470,108 @@ fun HomeScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.width(16.dp))
 
-                        // Main descriptive text
-                        Text(
-                            text = "Ordena rápido y sin bajarte del coche",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            lineHeight = 20.sp,
-                            modifier = Modifier.weight(1f)
-                        )
+                        // QR status text
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = if (hasScannedQR) "Acceso autorizado" else "Escanea el código QR",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                lineHeight = 20.sp
+                            )
+                            if (!hasScannedQR) {
+                                Text(
+                                    text = "Escanea el código QR de tu mesa para acceder al menú",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray,
+                                    lineHeight = 16.sp
+                                )
+                            }
+                        }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Call to action button
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.MENU)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 8.dp,
-                        pressedElevation = 12.dp
-                    )
-                ) {
-                    Text(
-                        text = "Comenzar pedido",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                // QR Scanner button or Menu access
+                if (!hasScannedQR) {
+                    Button(
+                        onClick = { showQRScanner = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(28.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 8.dp,
+                            pressedElevation = 12.dp
+                        )
+                    ) {
+                        Text(
+                            text = "Escanear código QR",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    Button(
+                        onClick = { navController.navigate(Routes.MENU) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(28.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 8.dp,
+                            pressedElevation = 12.dp
+                        )
+                    ) {
+                        Text(
+                            text = "Acceder al menú",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Secondary action
-                TextButton(
-                    onClick = {
-                        navController.navigate(Routes.MENU)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Ver menú completo",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                // Secondary action only when QR is scanned
+                if (hasScannedQR) {
+                    TextButton(
+                        onClick = { navController.navigate(Routes.MENU) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Ver menú completo",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.weight(1f))
         }
+    }
+
+    // QR Scanner Dialog
+    if (showQRScanner) {
+        QRScannerDialog(
+            onDismiss = { showQRScanner = false },
+            onScanSuccess = {
+                hasScannedQR = true
+                showQRScanner = false
+            }
+        )
     }
 }
