@@ -5,14 +5,14 @@
 5    <uses-sdk android:minSdkVersion="28" />
 6
 7    <application android:appCategory="audio" >
-7-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:3:5-20:19
-7-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:3:18-45
+7-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:3:5-20:19
+7-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:3:18-45
 8        <meta-data
-8-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:5:9-7:59
+8-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:5:9-7:59
 9            android:name="com.google.android.gms.car.application"
-9-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:6:13-66
+9-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:6:13-66
 10            android:resource="@xml/automotive_app_desc" />
-10-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:7:13-56
+10-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:7:13-56
 11
 12        <!--
 13         Main music service, provides media browsing and media playback services to
@@ -20,16 +20,16 @@
 15         MediaBrowser (for browsing) and MediaController (for playback control)
 16        -->
 17        <service
-17-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:12:9-18:19
+17-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:12:9-18:19
 18            android:name="com.example.drivethrurestaurante.shared.MyMusicService"
-18-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:13:13-82
+18-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:13:13-82
 19            android:exported="true" >
-19-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:14:13-36
+19-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:14:13-36
 20            <intent-filter>
-20-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:15:13-17:29
+20-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:15:13-17:29
 21                <action android:name="android.media.browse.MediaBrowserService" />
-21-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:16:17-83
-21-->F:\AndroidStudioProjects\shared\src\main\AndroidManifest.xml:16:25-80
+21-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:16:17-83
+21-->C:\Users\52618\AndroidStudioProjects\DriveThruRestaurante\shared\src\main\AndroidManifest.xml:16:25-80
 22            </intent-filter>
 23        </service>
 24    </application>

@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.drivethrurestaurante.screens.home.HomeScreen
 import com.example.drivethrurestaurante.screens.menu.MenuScreen
-import com.example.drivethrurestaurante.screens.order.OrderScreen
+import com.example.drivethrurestaurante.screens.checkout.OrderScreen
 import com.example.drivethrurestaurante.screens.confirmation.ConfirmationScreen
 import com.example.drivethrurestaurante.screens.finalscreen.FinalScreen
 
