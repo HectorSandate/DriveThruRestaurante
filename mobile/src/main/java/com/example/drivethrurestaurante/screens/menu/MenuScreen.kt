@@ -1,3 +1,4 @@
+// MenuScreen.kt - Actualizada
 package com.example.drivethrurestaurante.screens.menu
 
 import androidx.compose.foundation.background
@@ -29,12 +30,27 @@ import coil.request.ImageRequest
 import com.example.drivethrurestaurante.ui.navigation.Routes
 import com.example.drivethrurestaurante.data.model.MenuData
 import com.example.drivethrurestaurante.data.model.MenuItem
+import com.example.drivethrurestaurante.data.model.CartViewModel
+import com.example.drivethrurestaurante.ui.components.OrderConfirmationDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavController) {
+fun MenuScreen(
+    navController: NavController,
+    cartViewModel: CartViewModel
+) {
     var selectedTab by remember { mutableStateOf("Menu") }
     var selectedCategory by remember { mutableStateOf("DESAYUNOS") }
+
+    // Diálogo de confirmación de orden
+    if (cartViewModel.showOrderDialog && cartViewModel.currentAddedItem != null) {
+        OrderConfirmationDialog(
+            cartItem = cartViewModel.currentAddedItem,
+            cartViewModel = cartViewModel,
+            navController = navController,
+            onDismiss = { cartViewModel.dismissOrderDialog() }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -68,23 +84,27 @@ fun MenuScreen(navController: NavController) {
                         }
                     },
                     actions = {
-                        IconButton(onClick = { /* Navegar al carrito */ }) {
+                        IconButton(
+                            onClick = { navController.navigate(Routes.ORDER) }
+                        ) {
                             Box {
                                 Icon(
                                     imageVector = Icons.Default.ShoppingCart,
                                     contentDescription = "Carrito",
                                     tint = Color(0xFF333333)
                                 )
-                                // Badge opcional para mostrar cantidad de items
-                                Badge(
-                                    modifier = Modifier.align(Alignment.TopEnd),
-                                    containerColor = Color(0xFFE57373)
-                                ) {
-                                    Text(
-                                        text = "3",
-                                        fontSize = 10.sp,
-                                        color = Color.White
-                                    )
+                                // Badge con cantidad de items
+                                if (cartViewModel.getTotalItems() > 0) {
+                                    Badge(
+                                        modifier = Modifier.align(Alignment.TopEnd),
+                                        containerColor = Color(0xFFE57373)
+                                    ) {
+                                        Text(
+                                            text = cartViewModel.getTotalItems().toString(),
+                                            fontSize = 10.sp,
+                                            color = Color.White
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -120,7 +140,7 @@ fun MenuScreen(navController: NavController) {
                             items = MenuData.getSnacks(),
                             isHorizontal = true,
                             onItemClick = { item ->
-                                navController.navigate(Routes.ORDER)
+                                cartViewModel.addToCart(item)
                             }
                         )
                     }
@@ -140,7 +160,7 @@ fun MenuScreen(navController: NavController) {
                             items = comidaItems,
                             isHorizontal = false,
                             onItemClick = { item ->
-                                navController.navigate(Routes.ORDER)
+                                cartViewModel.addToCart(item)
                             }
                         )
                     }
@@ -148,7 +168,11 @@ fun MenuScreen(navController: NavController) {
 
                 "Recomendaciones" -> {
                     item {
-                        RecommendationsSection()
+                        RecommendationsSection(
+                            onItemClick = { item ->
+                                cartViewModel.addToCart(item)
+                            }
+                        )
                     }
                 }
             }
@@ -268,7 +292,9 @@ fun TabButton(
 }
 
 @Composable
-fun RecommendationsSection() {
+fun RecommendationsSection(
+    onItemClick: (MenuItem) -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -282,46 +308,18 @@ fun RecommendationsSection() {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            )
+        // Aquí podrías mostrar algunos productos recomendados
+        val recommendedItems = MenuData.getItemsByCategory("COMIDAS").take(3)
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp)
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(android.R.drawable.btn_star_big_on),
-                        contentDescription = null,
-                        tint = Color(0xFFE57373),
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Text(
-                        text = "Recomendaciones próximamente...",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color(0xFF666666),
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = "Estamos preparando las mejores sugerencias para ti",
-                        fontSize = 14.sp,
-                        color = Color(0xFF999999),
-                        textAlign = TextAlign.Center
-                    )
-                }
+            items(recommendedItems) { item ->
+                MenuItemCard(
+                    item = item,
+                    onClick = { onItemClick(item) }
+                )
             }
         }
     }

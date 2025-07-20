@@ -1,6 +1,7 @@
 package com.example.drivethrurestaurante.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import com.example.drivethrurestaurante.screens.menu.MenuScreen
 import com.example.drivethrurestaurante.screens.checkout.OrderScreen
 import com.example.drivethrurestaurante.screens.confirmation.ConfirmationScreen
 import com.example.drivethrurestaurante.screens.finalscreen.FinalScreen
+import com.example.drivethrurestaurante.data.model.CartViewModel
 
 object Routes {
     const val HOME = "home"
@@ -20,11 +22,24 @@ object Routes {
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
+    // Crear una instancia compartida del CartViewModel
+    val cartViewModel: CartViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = Routes.HOME) {
-        composable(Routes.HOME) { HomeScreen(navController) }
-        composable(Routes.MENU) { MenuScreen(navController) }
-        composable(Routes.ORDER) { OrderScreen(navController) }
-        composable(Routes.CONFIRMATION) { ConfirmationScreen(navController) }
-        composable(Routes.FINAL) { FinalScreen(navController) }
+        composable(Routes.HOME) {
+            HomeScreen(navController)
+        }
+        composable(Routes.MENU) {
+            MenuScreen(navController, cartViewModel)
+        }
+        composable(Routes.ORDER) {
+            OrderScreen(navController, cartViewModel)
+        }
+        composable(Routes.CONFIRMATION) {
+            ConfirmationScreen(navController, cartViewModel)
+        }
+        composable(Routes.FINAL) {
+            FinalScreen(navController)
+        }
     }
 }
