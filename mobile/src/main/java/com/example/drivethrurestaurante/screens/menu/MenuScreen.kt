@@ -92,7 +92,7 @@ fun MenuScreen(navController: NavController) {
             },
             navigationIcon = {
                 Image(
-                    painter = painterResource(id = R.drawable.logo2),
+                    painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo",
                     modifier = Modifier
                         .size(40.dp)
