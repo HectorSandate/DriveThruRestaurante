@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.drivethrurestaurante.ui.navigation.Routes
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import com.example.drivethrurestaurante.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,9 +38,10 @@ import com.example.drivethrurestaurante.R
 fun ImageCarousel(
     images: List<String>,
     modifier: Modifier = Modifier,
-    autoScrollDelay: Long = 2000L
+    autoScrollDelay: Long = 3000L
 ) {
     val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
     var currentIndex by remember { mutableStateOf(0) }
     var isUserInteracting by remember { mutableStateOf(false) }
 
@@ -47,8 +50,8 @@ fun ImageCarousel(
         if (listState.isScrollInProgress) {
             isUserInteracting = true
         } else {
-            // Pequeño delay para evitar que se reactive inmediatamente
-            delay(500)
+            // Delay más corto para mejor respuesta
+            delay(200)
             isUserInteracting = false
         }
     }
@@ -58,13 +61,20 @@ fun ImageCarousel(
         currentIndex = listState.firstVisibleItemIndex
     }
 
-    // Auto-scroll effect (solo cuando el usuario no está interactuando)
-    LaunchedEffect(currentIndex, isUserInteracting) {
-        if (!isUserInteracting) {
+    // Auto-scroll effect mejorado
+    LaunchedEffect(Unit) {
+        while (true) {
             delay(autoScrollDelay)
-            val nextIndex = (currentIndex + 1) % images.size
-            listState.animateScrollToItem(nextIndex)
-            currentIndex = nextIndex
+            if (!isUserInteracting && images.isNotEmpty()) {
+                val nextIndex = (currentIndex + 1) % images.size
+                coroutineScope.launch {
+                    listState.animateScrollToItem(
+                        index = nextIndex,
+                        scrollOffset = 0
+                    )
+                }
+                currentIndex = nextIndex
+            }
         }
     }
 
@@ -145,8 +155,14 @@ fun ImageCarousel(
                         )
                         .clickable {
                             currentIndex = index
-                            // Marcar como interacción del usuario temporalmente
                             isUserInteracting = true
+                            // Scroll inmediato al índice seleccionado usando coroutine
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(
+                                    index = index,
+                                    scrollOffset = 0
+                                )
+                            }
                         }
                 )
             }
