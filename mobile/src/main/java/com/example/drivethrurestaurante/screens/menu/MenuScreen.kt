@@ -128,7 +128,7 @@ fun MenuScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFFF8F8F8)),
+                .background(Color.White),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             when (selectedTab) {
@@ -193,8 +193,8 @@ fun CategoryMenuBar(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val categories = listOf(
                 "DESAYUNOS" to "Desayunos",
@@ -222,14 +222,14 @@ fun CategoryTab(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 2.dp) 
     ) {
         TextButton(
             onClick = onClick,
             colors = ButtonDefaults.textButtonColors(
                 contentColor = if (isSelected) Color(0xFFE57373) else Color(0xFF666666)
             ),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 2.dp) 
         ) {
             Text(
                 text = text,
@@ -243,14 +243,14 @@ fun CategoryTab(
             Box(
                 modifier = Modifier
                     .width(40.dp)
-                    .height(3.dp)
+                    .height(2.dp) // Altura reducida
                     .background(
                         Color(0xFFE57373),
-                        RoundedCornerShape(1.5.dp)
+                        RoundedCornerShape(1.dp)
                     )
             )
         } else {
-            Spacer(modifier = Modifier.height(3.dp))
+            Spacer(modifier = Modifier.height(2.dp))
         }
     }
 }
@@ -312,7 +312,7 @@ fun RecommendationsSection(
         val recommendedItems = MenuData.getItemsByCategory("COMIDAS").take(3)
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             contentPadding = PaddingValues(horizontal = 4.dp)
         ) {
             items(recommendedItems) { item ->
@@ -336,6 +336,7 @@ fun MenuSection(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
+            .padding(top = 16.dp) // Espacio adicional arriba
     ) {
         // Título de la sección con mejor estilo
         Text(
@@ -357,7 +358,7 @@ fun MenuSection(
         if (items.isNotEmpty()) {
             if (isHorizontal) {
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     contentPadding = PaddingValues(horizontal = 4.dp)
                 ) {
                     items(items) { item ->
@@ -424,12 +425,12 @@ fun MenuItemsGrid(
     onItemClick: (MenuItem) -> Unit
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items.chunked(2).forEach { rowItems ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 rowItems.forEach { item ->
                     MenuItemCard(
@@ -455,26 +456,29 @@ fun MenuItemCard(
     Card(
         modifier = modifier
             .then(
-                if (modifier == Modifier) Modifier.width(140.dp) else Modifier
+                if (modifier == Modifier) Modifier.width(160.dp) else Modifier
             )
-            .wrapContentHeight(),
+            .height(240.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 0.dp
         ),
         onClick = onClick
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             // Imagen circular del producto con fondo rojo
             Box(
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(90.dp) 
                     .background(
                         Color(0xFFE45656),
                         CircleShape
@@ -488,7 +492,7 @@ fun MenuItemCard(
                         .build(),
                     contentDescription = item.name,
                     modifier = Modifier
-                        .size(75.dp)
+                        .size(70.dp) 
                         .clip(CircleShape),
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(android.R.drawable.ic_menu_gallery),
@@ -496,34 +500,37 @@ fun MenuItemCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            // Contenido central
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp) 
+            ) {
+                // Nombre del producto
+                Text(
+                    text = item.name,
+                    fontSize = 15.sp, 
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF333333),
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    lineHeight = 20.sp
+                )
 
-            // Nombre del producto
-            Text(
-                text = item.name,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF333333),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            // Descripción del producto
-            Text(
-                text = item.description,
-                fontSize = 12.sp,
-                color = Color(0xFF666666),
-                textAlign = TextAlign.Center,
-                lineHeight = 16.sp
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
+                // Descripción del producto
+                Text(
+                    text = item.description,
+                    fontSize = 12.sp, 
+                    color = Color(0xFF666666),
+                    textAlign = TextAlign.Center,
+                    lineHeight = 16.sp,
+                    maxLines = 3 
+                )
+            }
 
             // Precio del producto
             Text(
                 text = "$${item.price}",
-                fontSize = 16.sp,
+                fontSize = 18.sp, 
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFE57373)
             )
