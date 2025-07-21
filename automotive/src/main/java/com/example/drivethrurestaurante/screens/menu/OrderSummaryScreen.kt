@@ -39,7 +39,7 @@ fun OrderSummaryScreen(
     val cartItems = CartState.getItems()
     val totalItems = CartState.getTotalItems()
     val totalPrice = CartState.getTotalPrice()
-    
+
     Scaffold(
         topBar = {
             Surface(
@@ -72,7 +72,7 @@ fun OrderSummaryScreen(
         }
     ) { paddingValues ->
         if (cartItems.isEmpty()) {
-            // Cuando no hay items, mostrar solo el mensaje 
+            // Cuando no hay items, mostrar solo el mensaje
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -159,7 +159,7 @@ fun OrderSummaryScreen(
                             horizontalArrangement = Arrangement.End
                         ) {
                             Button(
-                                onClick = { 
+                                onClick = {
                                     // Limpiar carrito y navegar a confirmación
                                     CartState.clearCart()
                                     navController.navigate(Routes.ORDER_CONFIRMATION)
@@ -223,7 +223,7 @@ fun CartItemRow(
                     .background(Color.LightGray)
             )
         }
-        
+
         // Información del producto
         Column(
             modifier = Modifier.weight(1f)
@@ -248,7 +248,7 @@ fun CartItemRow(
                 )
             }
         }
-        
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -306,7 +306,7 @@ fun CartItemRow(
                 }
             }
         }
-        
+
         // Precio total del item
         Text(
             text = "$${String.format("%.2f", cartItem.price * cartItem.quantity)}",
@@ -315,4 +315,4 @@ fun CartItemRow(
             color = Color.Black
         )
     }
-} 
+}

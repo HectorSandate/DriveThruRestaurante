@@ -65,14 +65,14 @@ fun MenuScreen(navController: NavController) {
     // Datos de ejemplo
     val desayunosItems = getAllMenuItems().filter { it.category == "desayunos" }
     val comidasItems = getAllMenuItems().filter { it.category == "comidas" }
-    val platosFuertesItems = getAllMenuItems().filter { it.category == "platos_fuertes" }
+    //val platosFuertesItems = getAllMenuItems().filter { it.category == "platos_fuertes" }
     val bebidasItems = getAllMenuItems().filter { it.category == "bebidas" }
     val postresItems = getAllMenuItems().filter { it.category == "postres" }
 
     // Section anchors for scrolling
     var desayunosSectionIndex by remember { mutableStateOf(0) }
     var comidasSectionIndex by remember { mutableStateOf(0) }
-    var platosFuertesSectionIndex by remember { mutableStateOf(0) }
+    //var platosFuertesSectionIndex by remember { mutableStateOf(0) }
     var bebidasSectionIndex by remember { mutableStateOf(0) }
     var postresSectionIndex by remember { mutableStateOf(0) }
 
@@ -275,7 +275,7 @@ fun MenuScreen(navController: NavController) {
                     }
 
                     // Sección Platos Fuertes
-                    item {
+                    /*item {
                         LaunchedEffect(Unit) {
                             platosFuertesSectionIndex = 4
                         }
@@ -285,16 +285,16 @@ fun MenuScreen(navController: NavController) {
                             color = Color.Gray,
                             modifier = Modifier.padding(start = 16.dp, top = 24.dp)
                         )
-                    }
+                    }*/
 
                     item {
-                        MenuSection(
+                        /*MenuSection(
                             title = "Platos Fuertes",
                             items = platosFuertesItems,
                             onItemClick = { item ->
                                 navController.navigate(Routes.createOrderRoute(item.id))
                             }
-                        )
+                        )*/
                     }
 
                     // Sección Bebidas
@@ -361,7 +361,7 @@ fun MenuScreen(navController: NavController) {
                             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
                         )
                     }
-                    
+
                     item {
                         Row(
                             modifier = Modifier
@@ -380,7 +380,7 @@ fun MenuScreen(navController: NavController) {
                             )
 
                             Spacer(modifier = Modifier.width(16.dp))
-                            
+
                             PromocionCard(
                                 imageRes = R.drawable.promocion2,
                                 title = "La Promo Más Familiar",

@@ -89,7 +89,7 @@ fun ImageCarousel(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            itemsIndexed(images) { index, imageUrl ->
+            itemsIndexed(images) { index, imageRes ->
                 Card(
                     modifier = Modifier
                         .width(350.dp)
@@ -106,7 +106,7 @@ fun ImageCarousel(
                         Image(
                             painter = rememberAsyncImagePainter(
                                 ImageRequest.Builder(LocalContext.current)
-                                    .data(data = imageUrl)
+                                    .data(data = imageRes)
                                     .apply(block = fun ImageRequest.Builder.() {
                                         crossfade(true)
                                         size(Size.ORIGINAL)

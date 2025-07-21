@@ -487,7 +487,7 @@ fun MenuItemCard(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(item.imageUrl)
+                        .data(item.imageRes)
                         .crossfade(true)
                         .build(),
                     contentDescription = item.name,

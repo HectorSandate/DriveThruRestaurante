@@ -35,16 +35,16 @@ fun OrderScreen(
     var comentarios by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf(1) }
     var showSnackbar by remember { mutableStateOf(false) }
-    
+
     // Encontrar el ítem por ID
     val item = remember(itemId) {
         getAllMenuItems().find { it.id == itemId } ?: getAllMenuItems().first()
     }
-    
-    val existingCartItem = remember { 
+
+    val existingCartItem = remember {
         mutableStateOf(CartState.getItems().find { it.id == itemId })
     }
-    
+
     LaunchedEffect(CartState.getItems()) {
         existingCartItem.value = CartState.getItems().find { it.id == itemId }
         // Si encontramos el item en el carrito, cargar sus valores
@@ -53,22 +53,22 @@ fun OrderScreen(
             quantity = cartItem.quantity
         }
     }
-    
+
     val hasChanges = remember(comentarios, quantity, existingCartItem.value) {
         existingCartItem.value != null && (
-            comentarios != existingCartItem.value?.comments || 
-            quantity != existingCartItem.value?.quantity
-        )
+                comentarios != existingCartItem.value?.comments ||
+                        quantity != existingCartItem.value?.quantity
+                )
     }
-    
+
     val buttonText = if (existingCartItem.value != null) {
         if (hasChanges) "Actualizar orden" else "Añadir a la orden"
     } else {
         "Añadir a la orden"
     }
-    
+
     val snackbarHostState = remember { SnackbarHostState() }
-    
+
     LaunchedEffect(showSnackbar) {
         if (showSnackbar) {
             snackbarHostState.showSnackbar(
@@ -146,7 +146,7 @@ fun OrderScreen(
                 .padding(24.dp),
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // Columna izquierda 
+            // Columna izquierda
             Column(
                 modifier = Modifier.weight(0.4f)
             ) {
@@ -199,7 +199,7 @@ fun OrderScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
@@ -335,4 +335,4 @@ fun OrderScreen(
             }
         }
     }
-} 
+}
