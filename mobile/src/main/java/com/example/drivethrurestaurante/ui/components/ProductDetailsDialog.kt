@@ -1,4 +1,3 @@
-// ProductDetailsDialog.kt
 package com.example.drivethrurestaurante.ui.components
 
 import androidx.compose.foundation.background
@@ -59,7 +58,6 @@ fun ProductDetailsDialog(
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    // Botón X en la esquina superior derecha
                     IconButton(
                         onClick = onDismiss,
                         modifier = Modifier
@@ -80,7 +78,6 @@ fun ProductDetailsDialog(
                             .padding(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Título
                         Text(
                             text = menuItem.name,
                             fontSize = 20.sp,

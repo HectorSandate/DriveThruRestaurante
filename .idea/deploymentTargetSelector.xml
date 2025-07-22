@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="mobile">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-22T17:02:02.198145Z">
+        <DropdownSelection timestamp="2025-07-22T17:58:25.754200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/danielorona/.android/avd/Automotive_Distant_Display_with_Google_Play.avd" />
@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="automotive">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-21T03:07:43.759685300Z">
+        <DropdownSelection timestamp="2025-07-22T17:58:34.454090Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\pepit\.android\avd\Automotive_1408p_landscape.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/danielorona/.android/avd/Automotive_Distant_Display_with_Google_Play.avd" />
             </handle>
           </Target>
         </DropdownSelection>
