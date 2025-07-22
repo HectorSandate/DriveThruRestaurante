@@ -32,6 +32,7 @@ import com.example.drivethrurestaurante.data.model.MenuData
 import com.example.drivethrurestaurante.data.model.MenuItem
 import com.example.drivethrurestaurante.data.model.CartViewModel
 import com.example.drivethrurestaurante.ui.components.OrderConfirmationDialog
+import com.example.drivethrurestaurante.ui.components.ProductDetailsDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +50,16 @@ fun MenuScreen(
             cartViewModel = cartViewModel,
             navController = navController,
             onDismiss = { cartViewModel.dismissOrderDialog() }
+        )
+    }
+
+    // Diálogo de detalles del producto
+    if (cartViewModel.showProductDetailsDialog && cartViewModel.selectedMenuItem != null) {
+        ProductDetailsDialog(
+            menuItem = cartViewModel.selectedMenuItem,
+            cartViewModel = cartViewModel,
+            navController = navController,
+            onDismiss = { cartViewModel.dismissProductDetailsDialog() }
         )
     }
 
@@ -140,7 +151,7 @@ fun MenuScreen(
                             items = MenuData.getSnacks(),
                             isHorizontal = true,
                             onItemClick = { item ->
-                                cartViewModel.addToCart(item)
+                                cartViewModel.showProductDetails(item)
                             }
                         )
                     }
@@ -160,7 +171,7 @@ fun MenuScreen(
                             items = comidaItems,
                             isHorizontal = false,
                             onItemClick = { item ->
-                                cartViewModel.addToCart(item)
+                                cartViewModel.showProductDetails(item)
                             }
                         )
                     }
@@ -170,7 +181,7 @@ fun MenuScreen(
                     item {
                         RecommendationsSection(
                             onItemClick = { item ->
-                                cartViewModel.addToCart(item)
+                                cartViewModel.showProductDetails(item)
                             }
                         )
                     }

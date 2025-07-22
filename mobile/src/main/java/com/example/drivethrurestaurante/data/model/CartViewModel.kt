@@ -21,8 +21,13 @@ class CartViewModel : ViewModel() {
 
     var currentAddedItem by mutableStateOf<CartItem?>(null)
 
+    // Variables para el modal de detalles del producto
+    var showProductDetailsDialog by mutableStateOf(false)
+
+    var selectedMenuItem by mutableStateOf<MenuItem?>(null)
+
     // Agregar producto al carrito
-    fun addToCart(menuItem: MenuItem, quantity: Int = 1, specialInstructions: String = "") {
+    fun addToCart(menuItem: MenuItem, quantity: Int = 1, specialInstructions: String = "", showConfirmationDialog: Boolean = true) {
         val existingItemIndex = cartItems.indexOfFirst { it.menuItem.id == menuItem.id }
 
         if (existingItemIndex >= 0) {
@@ -42,8 +47,10 @@ class CartViewModel : ViewModel() {
             currentAddedItem = newItem
         }
 
-        // Mostrar diálogo de confirmación
-        showOrderDialog = true
+        // Mostrar diálogo de confirmación solo si se solicita
+        if (showConfirmationDialog) {
+            showOrderDialog = true
+        }
     }
 
     // Actualizar cantidad de un producto
@@ -75,6 +82,18 @@ class CartViewModel : ViewModel() {
     fun dismissOrderDialog() {
         showOrderDialog = false
         currentAddedItem = null
+    }
+
+    // Mostrar modal de detalles del producto
+    fun showProductDetails(menuItem: MenuItem) {
+        selectedMenuItem = menuItem
+        showProductDetailsDialog = true
+    }
+
+    // Cerrar modal de detalles del producto
+    fun dismissProductDetailsDialog() {
+        showProductDetailsDialog = false
+        selectedMenuItem = null
     }
 
     // Obtener total del carrito

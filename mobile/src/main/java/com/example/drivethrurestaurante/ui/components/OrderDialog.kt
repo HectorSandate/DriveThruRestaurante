@@ -27,6 +27,7 @@ import coil.request.ImageRequest
 import com.example.drivethrurestaurante.ui.navigation.Routes
 import com.example.drivethrurestaurante.data.model.CartItem
 import com.example.drivethrurestaurante.data.model.CartViewModel
+import android.widget.Toast
 
 @Composable
 fun OrderConfirmationDialog(
@@ -39,6 +40,10 @@ fun OrderConfirmationDialog(
         // Estado local para manejar la cantidad y las instrucciones
         var localQuantity by remember(cartItem) { mutableStateOf(cartItem.quantity) }
         var specialInstructions by remember(cartItem) { mutableStateOf(cartItem.specialInstructions) }
+        val context = LocalContext.current
+        
+        // Detectar si hay cambios
+        val hasChanges = localQuantity != cartItem.quantity || specialInstructions != cartItem.specialInstructions
 
         Dialog(onDismissRequest = onDismiss) {
             Card(
@@ -115,14 +120,19 @@ fun OrderConfirmationDialog(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(
-                            onClick = {
-                                if (localQuantity > 1) {
-                                    localQuantity--
-                                }
-                            },
-                            enabled = localQuantity > 1
-                        ) {
+                        if (localQuantity > 1) {
+                            IconButton(
+                                onClick = { localQuantity-- }
+                            ) {
+                                Text(
+                                    text = "-",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF333333)
+                                )
+                            }
+                        } else {
+                            Spacer(modifier = Modifier.size(40.dp))
                         }
 
                         Text(
@@ -202,13 +212,17 @@ fun OrderConfirmationDialog(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        // Botón Ver Carrito
+                        // Botón principal (Ver Carrito o Actualizar Orden)
                         Button(
                             onClick = {
                                 // Actualizar el item en el carrito con los cambios locales
                                 cartViewModel.updateQuantity(cartItem.menuItem.id, localQuantity)
                                 cartViewModel.updateSpecialInstructions(cartItem.menuItem.id, specialInstructions)
 
+                                if (hasChanges) {
+                                    Toast.makeText(context, "¡Orden actualizada exitosamente!", Toast.LENGTH_SHORT).show()
+                                }
+                                
                                 onDismiss()
                                 navController.navigate(Routes.ORDER)
                             },
@@ -225,29 +239,8 @@ fun OrderConfirmationDialog(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Ver Carrito (${cartViewModel.getTotalItems() + (localQuantity - cartItem.quantity)})",
+                                text = if (hasChanges) "Actualizar Orden" else "Ver Carrito (${cartViewModel.getTotalItems()})",
                                 color = Color.White,
-                                fontSize = 16.sp
-                            )
-                        }
-
-                        // Botón Seguir Agregando
-                        OutlinedButton(
-                            onClick = {
-                                // Actualizar el item en el carrito con los cambios locales
-                                cartViewModel.updateQuantity(cartItem.menuItem.id, localQuantity)
-                                cartViewModel.updateSpecialInstructions(cartItem.menuItem.id, specialInstructions)
-
-                                onDismiss()
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Color(0xFFE57373)
-                            ),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Text(
-                                text = "Seguir Agregando",
                                 fontSize = 16.sp
                             )
                         }
