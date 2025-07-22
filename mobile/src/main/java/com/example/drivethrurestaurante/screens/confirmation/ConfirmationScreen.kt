@@ -153,7 +153,7 @@ fun ConfirmationScreen(
                         // Imagen del producto
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(cartItem.menuItem.imageUrl)
+                                .data(cartItem.menuItem.imageRes)
                                 .crossfade(true)
                                 .build(),
                             contentDescription = cartItem.menuItem.name,

@@ -4,19 +4,19 @@ plugins {
 }
 
 android {
-    namespace 'com.example.drivethrurestaurante.shared'
-    compileSdkVersion 34
+    namespace = 'com.example.drivethrurestaurante.shared'
+    compileSdkVersion = 34
 
     defaultConfig {
-        minSdkVersion 28
-        targetSdkVersion 34
+        minSdkVersion = 28
+        targetSdkVersion = 34
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
