@@ -587,6 +587,7 @@ fun HomeScreen(navController: NavController) {
             onScanSuccess = {
                 hasScannedQR = true
                 showQRScanner = false
+                navController.navigate(Routes.MENU)
             }
         )
     }
