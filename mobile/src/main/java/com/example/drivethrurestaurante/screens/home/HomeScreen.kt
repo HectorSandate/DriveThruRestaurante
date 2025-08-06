@@ -89,7 +89,7 @@ fun ImageCarousel(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            itemsIndexed(images) { index, imageUrl ->
+            itemsIndexed(images) { index, imageRes ->
                 Card(
                     modifier = Modifier
                         .width(350.dp)
@@ -106,7 +106,7 @@ fun ImageCarousel(
                         Image(
                             painter = rememberAsyncImagePainter(
                                 ImageRequest.Builder(LocalContext.current)
-                                    .data(data = imageUrl)
+                                    .data(data = imageRes)
                                     .apply(block = fun ImageRequest.Builder.() {
                                         crossfade(true)
                                         size(Size.ORIGINAL)
@@ -305,7 +305,7 @@ fun QRScannerDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, webSocketManager: com.example.drivethrurestaurante.WebSocketManager? = null) {
     var showQRScanner by remember { mutableStateOf(false) }
     var hasScannedQR by remember { mutableStateOf(false) }
 
@@ -587,6 +587,11 @@ fun HomeScreen(navController: NavController) {
             onScanSuccess = {
                 hasScannedQR = true
                 showQRScanner = false
+                
+                // Enviar mensaje al servidor para que automotive navegue al menú
+                webSocketManager?.send("De MOVIL: NAVEGAR_A_MENU")
+                
+                navController.navigate(Routes.MENU)
             }
         )
     }

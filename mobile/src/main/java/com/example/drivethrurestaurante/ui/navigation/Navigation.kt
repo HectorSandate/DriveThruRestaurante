@@ -21,13 +21,13 @@ object Routes {
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(navController: NavHostController, cartViewModel: CartViewModel, webSocketManager: com.example.drivethrurestaurante.WebSocketManager? = null) {
     // Crear una instancia compartida del CartViewModel
-    val cartViewModel: CartViewModel = viewModel()
+    //val cartViewModel = yourParamCartViewModel
 
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) {
-            HomeScreen(navController)
+            HomeScreen(navController, webSocketManager)
         }
         composable(Routes.MENU) {
             MenuScreen(navController, cartViewModel)

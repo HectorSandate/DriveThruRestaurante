@@ -25,4 +25,4 @@ rootProject.name = "DriveThruRestaurante"
 include(":mobile")
 include(":automotive")
 include(":shared")
- 
+include(":servidor")
