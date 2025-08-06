@@ -81,4 +81,10 @@ dependencies {
 
     // Coil para cargar imágenes desde URLs
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3")
 }

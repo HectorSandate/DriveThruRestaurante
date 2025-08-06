@@ -18,12 +18,12 @@ fun getAllMenuItems(): List<MenuItem> {
     val desayunosItems = listOf(
         MenuItem(
             id = 1,
-            name = "Pancakes",
+            name = "Pancakes Clásicos",
             description = "Con mantequilla, miel, frutas o chocolate.",
             detailedDescription = "Nuestros pancakes son preparados con una mezcla especial de harina, huevo, mantequilla, leche y un toque de vainilla, logrando una textura suave y esponjosa. Se sirven calientes, acompañados de mantequilla derretida y miel de maple 100% natural.",
             category = "desayunos",
             imageRes = R.drawable.pancakes,
-            price = 75.0
+            price = 85.0
         ),
         MenuItem(
             id = 2,
@@ -90,7 +90,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Sopa preparada diariamente con ingredientes frescos y de temporada. Servida con crutones caseros y hierbas frescas. Perfecta para comenzar tu comida o como plato ligero y reconfortante.",
             category = "comidas",
             imageRes = R.drawable.sopa_dia,
-            price = 55.0
+            price = 85.0
         ),
         MenuItem(
             id = 9,
@@ -99,7 +99,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Guacamole preparado al momento con aguacates Hass maduros, jitomate, cebolla morada, cilantro fresco, limón y un toque de chile serrano. Servido con totopos crujientes hechos en casa y salsas de la casa.",
             category = "comidas",
             imageRes = R.drawable.guacamole_totopos,
-            price = 75.0
+            price = 95.0
         ),
         MenuItem(
             id = 10,
@@ -117,7 +117,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Fettuccine bañado en una suave y cremosa salsa Alfredo hecha con mantequilla, crema y queso parmesano. Un platillo reconfortante con un toque italiano irresistible.",
             category = "comidas",
             imageRes = R.drawable.pasta_alfredo,
-            price = 75.0
+            price = 110.0
         )
     )
 
@@ -156,7 +156,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Té helado refrescante, disponible en sabores de durazno, limón o una mezcla de frutos rojos. Endulzado y servido con hielo.",
             category = "bebidas",
             imageRes = R.drawable.te,
-            price = 35.0
+            price = 55.0
         ),
         MenuItem(
             id = 16,
@@ -165,7 +165,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Smoothie de fruta fresca a tu elección. Elige entre fresa, mango, plátano o una combinación de tus favoritos. Hecho con leche y hielo.",
             category = "bebidas",
             imageRes = R.drawable.smoothie,
-            price = 45.0
+            price = 30.0
         ),
         MenuItem(
             id = 17,
@@ -186,7 +186,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Delicioso brownie casero con chocolate derretido y nueces. Servido caliente con una bola de helado de vainilla opcional.",
             category = "postres",
             imageRes = R.drawable.brownie,
-            price = 45.0
+            price = 50.0
         ),
         MenuItem(
             id = 19,
@@ -204,7 +204,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Dona fresca y esponjosa glaseada con chocolate derretido. Perfecta para acompañar con café o como postre.",
             category = "postres",
             imageRes = R.drawable.dona,
-            price = 35.0
+            price = 55.0
         ),
         MenuItem(
             id = 21,
@@ -222,7 +222,7 @@ fun getAllMenuItems(): List<MenuItem> {
             detailedDescription = "Crujientes por fuera y suaves por dentro, espolvoreados con azúcar y canela. Servidos calientitos, perfectos para acompañar con chocolate o cajeta.",
             category = "postres",
             imageRes = R.drawable.churros,
-            price = 35.0
+            price = 45.0
         )
     )
 

@@ -30,16 +30,37 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Dp
 import android.util.Log
-
+import com.example.drivethrurestaurante.network.GlobalSocketManager
+import com.example.drivethrurestaurante.screens.menu.CartState
 @Composable
 fun OrderConfirmationScreen(navController: NavController) {
     // Estado para controlar la navegación
     var hasNavigated by remember { mutableStateOf(false) }
     var showButton by remember { mutableStateOf(false) }
+
+    // ✅ Enviar mensaje de orden finalizada
+    GlobalSocketManager.socket?.send("De AUTOMOTIVE: ORDEN_FINALIZADA")
+    Log.d("WebSocket", "📤 Enviando mensaje: ORDEN_FINALIZADA")
+
+    // ✅ Limpiar carrito
+    CartState.clearCart()
+    Log.d("CartState", "🧹 Carrito limpiado")
     
     // Mostrar botón después de 10 segundos en lugar de navegar automáticamente
     LaunchedEffect(Unit) {
         delay(10000)
+
+        showButton = true
+
+        // Intentar navegar
+        try {
+            navController.navigate("home") {
+                popUpTo("order_confirmation") { inclusive = true }
+            }
+        } catch (e: Exception) {
+            Log.e("OrderConfirmation", "Navegación automática falló: ${e.message}", e)
+        }
+
         showButton = true
         
         // También intentar navegación automática como respaldo

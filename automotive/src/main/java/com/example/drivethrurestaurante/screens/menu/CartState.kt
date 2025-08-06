@@ -3,6 +3,9 @@ package com.example.drivethrurestaurante.screens.menu
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.example.drivethrurestaurante.network.CartSender
+import com.example.drivethrurestaurante.network.GlobalSocketManager
+import android.util.Log
 
 data class CartItem(
     val id: Int,
@@ -14,6 +17,29 @@ data class CartItem(
 
 object CartState {
     private var cartItems by mutableStateOf<List<CartItem>>(emptyList())
+    private var isUpdatingFromMobile = false // Flag para evitar envío automático cuando se reciben datos del móvil
+
+    // Función privada para enviar automáticamente al móvil
+    private fun sendToMobile() {
+        if (isUpdatingFromMobile) {
+            Log.d("CartState", "⏸️ Omitiendo envío automático (actualizando desde móvil)")
+            return
+        }
+        
+        GlobalSocketManager.socket?.let { socket ->
+            Log.d("CartState", "📤 Enviando carrito automáticamente al móvil")
+            CartSender.enviarCarrito(socket)
+        } ?: run {
+            Log.w("CartState", "⚠️ Socket no disponible para enviar al móvil")
+        }
+    }
+
+    // Función para actualizar desde el móvil sin enviar de vuelta
+    fun updateFromMobile(updateFunction: () -> Unit) {
+        isUpdatingFromMobile = true
+        updateFunction()
+        isUpdatingFromMobile = false
+    }
 
     fun addItem(item: CartItem) {
         val existingItem = cartItems.find { it.id == item.id }
@@ -33,10 +59,15 @@ object CartState {
         } else {
             cartItems = cartItems + item
         }
+        
+        // Enviar automáticamente al móvil después de agregar/actualizar
+        sendToMobile()
     }
 
     fun removeItem(itemId: Int) {
         cartItems = cartItems.filter { it.id != itemId }
+        // Enviar automáticamente al móvil después de eliminar
+        sendToMobile()
     }
 
     fun updateItemQuantity(itemId: Int, newQuantity: Int) {
@@ -50,6 +81,8 @@ object CartState {
                     it
                 }
             }
+            // Enviar automáticamente al móvil después de actualizar cantidad
+            sendToMobile()
         }
     }
 
@@ -61,6 +94,8 @@ object CartState {
                 it
             }
         }
+        // Enviar automáticamente al móvil después de actualizar comentarios
+        sendToMobile()
     }
 
     fun getItems(): List<CartItem> = cartItems
@@ -71,5 +106,7 @@ object CartState {
 
     fun clearCart() {
         cartItems = emptyList()
+        // Enviar automáticamente al móvil después de limpiar (carrito vacío)
+        sendToMobile()
     }
 } 

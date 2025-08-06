@@ -283,6 +283,8 @@ fun ConfirmationScreen(
                     // Botón Enviar pedido
                     Button(
                         onClick = {
+                            // Enviar mensaje de orden finalizada al servidor
+                            cartViewModel.sendOrderFinalized()
                             // Limpiar carrito y navegar a pantalla final
                             cartViewModel.clearCart()
                             navController.navigate(Routes.FINAL) {

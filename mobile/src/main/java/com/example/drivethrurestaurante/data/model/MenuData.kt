@@ -48,7 +48,7 @@ object MenuData {
             name = "Waffles",
             description = "Con mantequilla, miel, frutas o chocolate.",
             category = "DESAYUNOS",
-            price = 75.0,
+            price = 80.0,
             imageUrl = "https://lovefoodfeed.com/wp-content/uploads/2021/07/BLT-bacon-lettuce-tomato-sandwich-02wp.webp",
             imageRes = R.drawable.waffles
         ),
@@ -113,7 +113,7 @@ object MenuData {
             name = "Quesadillas",
             description = "Tortilla con queso y opción de pollo o carne",
             category = "COMIDAS",
-            price = 80.0,
+            price = 75.0,
             imageUrl = "https://media.wawa.com/i/wawa/BreakfastQuesadillas_TallHeroBanner_02082023",
             imageRes = R.drawable.quesadillas
         ),
@@ -133,7 +133,7 @@ object MenuData {
             name = "Agua de horchata",
             description = "Con canela y leche condensada",
             category = "BEBIDAS",
-            price = 35.0,
+            price = 30.0,
             imageUrl = "https://yellowrabbit.mx/cdn/shop/files/pngtree-americano-coffee-beans-transparent-white-background-png-image_9097377_1000x1000.png?v=1693514503",
             imageRes = R.drawable.horchata
         ),
@@ -142,7 +142,7 @@ object MenuData {
             name = "Agua de jamaica",
             description = "Refrescante y natural",
             category = "BEBIDAS",
-            price = 45.0,
+            price = 30.0,
             imageUrl = "https://discountcoffee.mx/cdn/shop/products/Disenosintitulo-38.png?v=1645556502",
             imageRes = R.drawable.jamaica
         ),
@@ -151,7 +151,7 @@ object MenuData {
             name = "Limonada mineral",
             description = "Jugo natural de limon recién exprimido",
             category = "BEBIDAS",
-            price = 40.0,
+            price = 35.0,
             imageUrl = "https://static.vecteezy.com/system/resources/previews/050/591/823/non_2x/fresh-orange-juice-in-a-clear-glass-bottle-with-whole-and-halved-oranges-free-png.png",
             imageRes = R.drawable.limonada
         ),
@@ -198,7 +198,7 @@ object MenuData {
             name = "Crepa de Chocolate",
             description = "Con chocolate derretido",
             category = "POSTRES",
-            price = 65.0,
+            price = 50.0,
             imageUrl = "https://morningstarcafe.com.mx/uploads/large/1654541664_pastelchocolate.png",
             imageRes = R.drawable.crepa
         ),
