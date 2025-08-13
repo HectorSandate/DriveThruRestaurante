@@ -4,6 +4,7 @@
     <uses-feature
         android:name="android.hardware.type.automotive"
         android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DriveThruRestaurante" />
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/Theme.DriveThruRestaurante">
+        
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DriveThruRestaurante">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
 
 </manifest>
