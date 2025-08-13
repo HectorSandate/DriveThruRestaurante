@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -143,6 +145,7 @@ fun OrderScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(Color.White)
+                .verticalScroll(rememberScrollState())
                 .padding(24.dp),
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -179,7 +182,7 @@ fun OrderScreen(
                     text = "${item.name} $${item.price}",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 )
 
                 Text(
@@ -243,7 +246,7 @@ fun OrderScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(13.dp))
 
                 Text(
                     text = "Comentarios o instrucciones especiales",
@@ -257,7 +260,7 @@ fun OrderScreen(
                     onValueChange = { comentarios = it },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .heightIn(min = 55.dp, max = 150.dp),
                     placeholder = {
                         Text(
                             "Escribe aquí tus comentarios o instrucciones especiales para tu orden...",
@@ -268,10 +271,16 @@ fun OrderScreen(
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = Color.LightGray,
                         focusedBorderColor = Color(0xFFE57373)
+                    ),
+                    maxLines = 5,
+                    minLines = 2,
+                    textStyle = androidx.compose.ui.text.TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 20.sp
                     )
                 )
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -304,7 +313,7 @@ fun OrderScreen(
                         Text(buttonText)
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
 
                     Button(
                         onClick = {

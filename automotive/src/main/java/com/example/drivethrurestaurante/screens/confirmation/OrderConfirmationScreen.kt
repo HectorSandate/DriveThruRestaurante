@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.Dp
 import android.util.Log
 import com.example.drivethrurestaurante.network.GlobalSocketManager
 import com.example.drivethrurestaurante.screens.menu.CartState
+
 @Composable
 fun OrderConfirmationScreen(navController: NavController) {
     // Estado para controlar la navegación
@@ -41,13 +42,14 @@ fun OrderConfirmationScreen(navController: NavController) {
     // ✅ Enviar mensaje de orden finalizada
     GlobalSocketManager.socket?.send("De AUTOMOTIVE: ORDEN_FINALIZADA")
     Log.d("WebSocket", "📤 Enviando mensaje: ORDEN_FINALIZADA")
-
-    // ✅ Limpiar carrito
-    CartState.clearCart()
-    Log.d("CartState", "🧹 Carrito limpiado")
     
     // Mostrar botón después de 10 segundos en lugar de navegar automáticamente
     LaunchedEffect(Unit) {
+        // ✅ Limpiar carrito después de un pequeño delay para evitar el flash
+        delay(100)
+        CartState.clearCart()
+        Log.d("CartState", "🧹 Carrito limpiado")
+        
         delay(10000)
 
         showButton = true
@@ -81,10 +83,9 @@ fun OrderConfirmationScreen(navController: NavController) {
             Log.d("OrderConfirmation", "OrderConfirmationScreen disposed")
         }
     }
+
+    val currentDate = SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(Date())
     
-    val currentDate = remember {
-        SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(Date())
-    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -134,16 +135,16 @@ fun OrderConfirmationScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(48.dp))
             // Textos
             Column(
-                modifier = Modifier.weight(1.2f),
+                modifier = Modifier.weight(1.5f),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "Orden confirmada!",
-                    fontSize = 54.sp,
+                    fontSize = 50.sp,
                     fontWeight = FontWeight.Black,
                     color = Color.Black
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Avanza a la siguiente ventanilla para\npagar y recoger tu orden.",
                     fontSize = 28.sp,
